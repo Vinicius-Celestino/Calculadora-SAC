@@ -15,7 +15,7 @@
     <div class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width:300px">
         <img src="https://upload.wikimedia.org/wikipedia/commons/7/76/Verisure_logo.svg" width="200"
             style="margin-left:10px;margin-top:10px">
-        <h2 class="w3-bar-item" >CALCULADORA SAC TESTE</h2>
+        <h2 class="w3-bar-item">CALCULADORA SAC TESTE</h2>
         <button class="w3-bar-item w3-button w3-ripple tablink" onclick="openCalc(event, 'PRI')">PRÓ-RATA DE
             INÍCIO</button>
         <button class="w3-bar-item w3-button w3-ripple tablink" onclick="openCalc(event, 'PRC')">PRÓ-RATA DE
@@ -79,7 +79,8 @@
                     </tr>
                     <tr colspan="1">
                         <td class="col1">
-                            <button class="w3-button w3-red w3-ripple w3-button w3-block" onclick="calcularPRI()">Calcular</button>
+                            <button class="w3-button w3-red w3-ripple w3-button w3-block"
+                                onclick="calcularPRI()">Calcular</button>
                         </td>
                         <td class="col2">
                         </td>
@@ -141,7 +142,7 @@
                                     <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
                                             type="date" id="dtvencPRC"></td>
                                 </tr>
-                                
+
                                 <tr>
                                     <td class="col1">Tem retenção de ISS?<br><i>(Insira a porcentagem)</i></td>
                                     <td class="col2"><input class="w3-input w3-border-red" style="width:200px" value="0"
@@ -172,7 +173,8 @@
                                 </tr>
                                 <tr colspan="1">
                                     <td class="col1">
-                                        <button class="w3-button w3-red w3-ripple w3-button w3-block" onclick="calcularPRC()">Calcular</button>
+                                        <button class="w3-button w3-red w3-ripple w3-button w3-block"
+                                            onclick="calcularPRC()">Calcular</button>
                                     </td>
                                     <td class="col2">
                                     </td>
@@ -208,7 +210,8 @@
                                             id="VlPagPRC" readonly></td>
                                 </tr>
                                 <tr>
-                                    <td class="col1 "><b>Valor a ser reembolsado<br><i>(Solicitação de reembolso GOA)</i></b></td>
+                                    <td class="col1 "><b>Valor a ser reembolsado<br><i>(Solicitação de reembolso
+                                                GOA)</i></b></td>
                                     <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
                                             id="VlReePRC" readonly></td>
                                 </tr>
@@ -219,7 +222,8 @@
                             <table class="w3-card w3-light-grey" cellpadding="3" cellspacing="13">
                                 <tr align="center" class="w3-light-grey">
                                     <td>
-                                        <b>ENVIO DE D.I</b> ABRIR O.S. PARA:<br><u><i>SAC > BACKOFFICE > SOLICITAÇÃO ENVIO DI (DEPÓSITO
+                                        <b>ENVIO DE D.I</b> ABRIR O.S. PARA:<br><u><i>SAC > BACKOFFICE > SOLICITAÇÃO
+                                                ENVIO DI (DEPÓSITO
                                                 IDENTIFICADO)</u></i>
                                     </td>
                                 </tr>
@@ -229,31 +233,40 @@
                                 </tr>
                                 <tr align="center">
                                     <td>
-                                        <button class="w3-button w3-red w3-ripple w3-round-large" onclick="copyTextPRC()">Copiar texto</button>
+                                        <button class="w3-button w3-red w3-ripple w3-round-large"
+                                            onclick="copyTextPRC()">Copiar texto</button>
                                     </td>
                                 </tr>
                                 <tr align="center" class="w3-light-grey">
                                     <td>
-                                        <b>REEMBOLSO MENSALIDADE PAGA A MAIS</b> ABRIR O.S. PARA:<br><u><i>CADASTRO > CADASTRO > SOLICITAÇÃO DE REEMBOLSO</u></i>
+                                        <b>REEMBOLSO MENSALIDADE PAGA A MAIS</b> ABRIR O.S. PARA:<br><u><i>CADASTRO >
+                                                CADASTRO > SOLICITAÇÃO DE REEMBOLSO</u></i>
                                     </td>
                                 </tr>
                                 <tr class="w3-dark-grey" align="center" id="txtReePRC">
-                                    <td>Por favor, enviar dados para reembolso no valor de R$ xxx,xx referente ao pró-rata de
+                                    <td>Por favor, enviar dados para reembolso no valor de R$ xxx,xx referente ao
+                                        pró-rata de
                                         cancelamento cobrada a mais, dados bancários para reembolso:</td>
                                 </tr>
                                 <tr align="center">
                                     <td>
-                                        <button class="w3-button w3-red w3-ripple w3-round-large w3-border" onclick="copyTextPRC()">Copiar texto</button>
+                                        <button class="w3-button w3-red w3-ripple w3-round-large w3-border"
+                                            onclick="copyTextPRC()">Copiar texto</button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <div class="w3-panel w3-pale w3-leftbar w3-border-red">
                                             <i class="w3-text-red   ">Atenção!</i>
-                                            <li>Devoluções acontecem somente para uma conta do CPF ou CNPJ titular do contrato.</li>
-                                            <li>Antes de realizar o cálculo, confirme se de fato o valor foi pago, e não baixado como desconto.</li>    
-                                            <li>Os serviços digitais só devem ser considerados, se a monitoria foi emitida considerando os serviços.</li>    
-                                            <li>A retenção de impostos(ISS, PCC e IR) é feita somente para clientes PJ. Não descontamos impostos para notas do munício de <b>Joinville</b> mesmo que seja PJ.</li>    
+                                            <li>Devoluções acontecem somente para uma conta do CPF ou CNPJ titular do
+                                                contrato.</li>
+                                            <li>Antes de realizar o cálculo, confirme se de fato o valor foi pago, e não
+                                                baixado como desconto.</li>
+                                            <li>Os serviços digitais só devem ser considerados, se a monitoria foi
+                                                emitida considerando os serviços.</li>
+                                            <li>A retenção de impostos(ISS, PCC e IR) é feita somente para clientes PJ.
+                                                Não descontamos impostos para notas do munício de <b>Joinville</b>,
+                                                mesmo que seja PJ.</li>
 
                                         </div>
                                         <!-- <i class="w3-text-red   ">Atenção!</i> -->
@@ -307,7 +320,8 @@
                                 </tr>
                                 <tr colspan="1">
                                     <td class="col1">
-                                        <button class="w3-button w3-red w3-ripple w3-button w3-block" onclick="calcularNM()">Calcular</button>
+                                        <button class="w3-button w3-red w3-ripple w3-button w3-block"
+                                            onclick="calcularNM()">Calcular</button>
                                     </td>
                                     <td class="col2">
                                     </td>
@@ -353,17 +367,17 @@
                                 </tr>
                                 <tr align="center">
                                     <td>
-                                        <button class="w3-button w3-red w3-ripple w3-round-large" onclick="copyTextNM()">Copiar texto</button>
+                                        <button class="w3-button w3-red w3-ripple w3-round-large"
+                                            onclick="copyTextNM()">Copiar texto</button>
                                     </td>
                                 </tr>
-                                <tr class="w3-pale-red" align="left">
-                                    <td>
-                                        <b>Regras:</b><br>
-                                        • Não pode ter título vencido<br>
-                                        • Não pode ter recebido desconto nos últimos 12 meses<br>
-                                        • Deve ter mais de 6 meses de contrato
-                                    </td>
-                                </tr>
+                                <td>
+                                    <div class="w3-panel w3-pale w3-leftbar w3-border-red w3-margin-left">
+                                        <i class="w3-text"><b>Regras</b></i>
+                                        <li>Não pode ter título vencido.</li>
+                                        <li>Não pode ter recebido desconto nos últimos 12 meses.</li>
+                                        <li>Deve ter mais de 6 meses de contrato.</li>
+                                    </div>
                             </table>
                         </td>
                 </table>
@@ -426,7 +440,7 @@
             VlPag = VlPag.toFixed(2).replace(".", ",");
             document.getElementById('VlPagPRI').value = VlPag.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
-        
+
         function calcularPRC() {
             var dtcanc = new Date(document.getElementById('dtcancPRC').value);
             var dtvenc = new Date(document.getElementById('dtvencPRC').value);
@@ -444,7 +458,7 @@
             var VlIR = IR * 0.01 * (mens / 30 * qtdias);
             var VlPCC = PCC * 0.0465 * (mens / 30 * qtdias);
             var VlPag = (mens / 30 * qtdias) - VlISS - VlIR - VlPCC + sva;
-            var VlRee = mens - (VlPag - sva); 
+            var VlRee = mens - (VlPag - sva);
 
             document.getElementById('qtdiasPRC').value = qtdias;
             document.getElementById('dtfinPRC').value = dtfin.toLocaleString().split(',')[0];
@@ -459,7 +473,7 @@
                 document.getElementById('VlReePRC').value = "TÍTULO INTEGRAL";
                 document.getElementById('txtPRC').innerHTML = "<td>Por favor, enviar dados para DI no valor do TÍTULO INTEGRAL referente ao pró-rata de cancelamento, que foi do dia " + dtfin.toLocaleString().split(',')[0] + " até " + dtv2.toLocaleString().split(',')[0] + " no e-mail:</td>";
                 document.getElementById('txtReePRC').innerHTML = "<td>Por favor, enviar dados para DI no valor do TÍTULO INTEGRAL referente ao pró-rata de cancelamento, que foi do dia " + dtfin.toLocaleString().split(',')[0] + " até " + dtv2.toLocaleString().split(',')[0] + " no e-mail:</td>";
-                
+
             }
             else {
                 VlPag = VlPag.toFixed(2).replace(".", ",");
@@ -468,7 +482,7 @@
                 document.getElementById('VlReePRC').value = VlRee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
                 document.getElementById('txtPRC').innerHTML = "<td>Por favor, enviar dados para DI no valor de R$ " + VlPag.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " referente ao pró-rata de cancelamento, que foi do dia " + dtfin.toLocaleString().split(',')[0] + " até " + dtv2.toLocaleString().split(',')[0] + " no e-mail:</td>";
                 document.getElementById('txtReePRC').innerHTML = "<td>Por favor, enviar dados para reembolso no valor de R$ " + VlRee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " referente ao pró-rata de cancelamento cobrada a mais, dados bancários para reembolso: ";
-                
+
             }
         }
 
@@ -557,7 +571,7 @@
             valor = (valor / 100).toFixed(2).replace(".", ",");
             campo.value = valor.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
-        
+
     </script>
 </body>
 
