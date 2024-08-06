@@ -3,6 +3,7 @@
 <title>CALCULADORA SAC TESTE</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <style>
     html {
@@ -129,6 +130,7 @@
                             <table cellpadding="3" cellspacing="3" align="left">
                                 <tr>
                                     <td class="col1">Valor da mensalidade<br><i>(Valor da nota fiscal)</i></td>
+                                    
                                     <td class="col2"><input class="w3-input w3-border-red" style="width:200px" value="0"
                                             id="mensPRC" oninput="formatarValorCampo(this)"></td>
                                 </tr>
@@ -207,13 +209,15 @@
                                 <tr>
                                     <td class="col1"><b>Valor a pagar<br><i>(Envio de D.I)</i></b></td>
                                     <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
-                                            id="VlPagPRC" readonly></td>
+                                            id="VlPagPRC" readonly><td><button class="w3-button w3-red w3-ripple w3-round-large" title="Copiar valor a pagar"><i class="fa fa-copy"></i>
+                                            </button></td></td>
                                 </tr>
                                 <tr>
                                     <td class="col1 "><b>Valor a ser reembolsado<br><i>(Solicitação de reembolso
                                                 GOA)</i></b></td>
                                     <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
-                                            id="VlReePRC" readonly></td>
+                                            id="VlReePRC" readonly><td><button class="w3-button w3-red w3-ripple w3-round-large" title="Copiar valor a ser reembolsado"><i class="fa fa-copy"></i>
+                                            </button></td></td>
                                 </tr>
                             </table>
                         </td>
@@ -234,7 +238,7 @@
                                 <tr align="center">
                                     <td>
                                         <button class="w3-button w3-red w3-ripple w3-round-large"
-                                            onclick="copyTextPRC()">Copiar texto</button>
+                                            onclick="copyTextPRC()" title="Copiar descrição a ser inserida na abertura da O.S">Copiar texto</button>
                                     </td>
                                 </tr>
                                 <tr align="center" class="w3-light-grey">
@@ -244,14 +248,14 @@
                                     </td>
                                 </tr>
                                 <tr class="w3-dark-grey" align="center" id="txtReePRC">
-                                    <td>Por favor, enviar dados para reembolso no valor de R$ xxx,xx referente ao
+                                    <td>Por favor, enviar dados para reembolso no valor de R$ xxx,xx referente a
                                         pró-rata de
                                         cancelamento cobrada a mais, dados bancários para reembolso:</td>
                                 </tr>
                                 <tr align="center">
                                     <td>
                                         <button class="w3-button w3-red w3-ripple w3-round-large w3-border"
-                                            onclick="copyTextPRC()">Copiar texto</button>
+                                            onclick="copyTextPRC()" title="Copiar descrição a ser inserida na abertura da O.S">Copiar texto</button>
                                     </td>
                                 </tr>
                                 <tr>
@@ -267,7 +271,6 @@
                                             <li>A retenção de impostos(ISS, PCC e IR) é feita somente para clientes PJ.
                                                 Não descontamos impostos para notas do munício de <b>Joinville</b>,
                                                 mesmo que seja PJ.</li>
-
                                         </div>
                                         <!-- <i class="w3-text-red   ">Atenção!</i> -->
                                         <!-- <h3><b>Caso o cliente possua os serviços digitais, somar ao valor final a ser pago "Valor a pagar"</b></h3> -->
@@ -481,7 +484,7 @@
                 document.getElementById('VlPagPRC').value = VlPag.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
                 document.getElementById('VlReePRC').value = VlRee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
                 document.getElementById('txtPRC').innerHTML = "<td>Por favor, enviar dados para DI no valor de R$ " + VlPag.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " referente ao pró-rata de cancelamento, que foi do dia " + dtfin.toLocaleString().split(',')[0] + " até " + dtv2.toLocaleString().split(',')[0] + " no e-mail:</td>";
-                document.getElementById('txtReePRC').innerHTML = "<td>Por favor, enviar dados para reembolso no valor de R$ " + VlRee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " referente ao pró-rata de cancelamento cobrada a mais, dados bancários para reembolso: ";
+                document.getElementById('txtReePRC').innerHTML = "<td>Por favor, enviar dados para reembolso no valor de R$ " + VlRee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " referente a pró-rata de cancelamento cobrada a mais, dados bancários para reembolso: ";
 
             }
         }
