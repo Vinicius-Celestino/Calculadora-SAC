@@ -173,7 +173,7 @@ function copyTextNM() {
     Text = Text.toString().replace("<td>", "");
     Text = Text.toString().replace("</td>", "");
     navigator.clipboard.writeText(Text);
-    window.alert("Texto copiado");
+    mostrarNotificacao("TEXTO COPIADO");
 }
 
 function copyValorPag() {
@@ -181,19 +181,7 @@ function copyValorPag() {
     var valorFormatado = valor.toFixed(2);
     valorFormatado = valorFormatado.replace(".", ",").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     navigator.clipboard.writeText(valorFormatado);
-    window.alert("Texto copiado");
-    console.log(valorFormatado);
-}
-
-function copyValorPag() {
-    var valor = parseFloat(document.getElementById('VlPagPRC').value.replace(/\./g, "").replace(",", "."));
-    var valorFormatado = valor.toFixed(2);
-    valorFormatado = valorFormatado.replace(".", ",").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
-    navigator.clipboard.writeText(valorFormatado);
-
     mostrarNotificacao("VALOR COPIADO");
-
     console.log(valorFormatado);
 }
 
@@ -201,12 +189,42 @@ function copyValorRee() {
     var valor = parseFloat(document.getElementById('VlReePRC').value.replace(/\./g, "").replace(",", "."));
     var valorFormatado = valor.toFixed(2);
     valorFormatado = valorFormatado.replace(".", ",").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
     navigator.clipboard.writeText(valorFormatado);
-
     mostrarNotificacao("VALOR COPIADO");
-
     console.log(valorFormatado);
+}
+
+function limparCamposPRC() {
+    document.getElementById('mensPRC').value = '0,00';
+    document.getElementById('dtcancPRC').value = '';
+    document.getElementById('dtvencPRC').value = '';
+    document.getElementById('ISSPRC').value = '0';
+    document.getElementById('IRPRC').value = '0';
+    document.getElementById('PCCPRC').value = '0';
+    document.getElementById('svaPRC').value = '0,00';
+    document.getElementById('qtdiasPRC').value = '';
+    document.getElementById('dtfinPRC').value = '';
+    document.getElementById('VlISSPRC').value = '';
+    document.getElementById('VlIRPRC').value = '';
+    document.getElementById('VlPCCPRC').value = '';
+    document.getElementById('VlPagPRC').value = '';
+    document.getElementById('VlReePRC').value = '';
+
+    document.getElementById('txtPRC').innerHTML = 'Por favor, enviar dados para DI no valor de R$ xxx,xx referente ao pró-rata de cancelamento, que foi do dia xx/xx/xxxx até yy/yy/yyyy no e-mail:';
+    document.getElementById('txtReePRC').innerHTML = 'Por favor, enviar dados para reembolso no valor de R$ xxx,xx referente a pró-rata de cancelamento cobrada a mais, dados bancários para reembolso:';
+
+    mostrarNotificacao("DADOS EXCLUÍDOS", 3000, 'w3-red', 'fa fa-trash-o');
+}
+
+function limparCamposNM() {
+    document.getElementById('mensNM').value = '0,00';
+    document.getElementById('starNM').value = '1';
+    document.getElementById('dtiniNM').value = '';
+    document.getElementById('FinNM').value = '0';
+
+    document.getElementById('txtNM').innerHTML = 'Favor aplicar o desconto de x,xx% na mensalidade durante 3 meses. Total de desconto: R$ xx,xx diluído em 3x de R$ xx,xx';
+
+    mostrarNotificacao("DADOS EXCLUÍDOS", 3000, 'w3-red', 'fa fa-trash-o');
 }
 
 function mostrarNotificacao(message, duration = 3000, colorClass = 'w3-green', iconClass = 'fa-check') {
@@ -234,28 +252,6 @@ function mostrarNotificacao(message, duration = 3000, colorClass = 'w3-green', i
             notification.style.display = 'none';
         }, 500);
     }, duration);
-}
-
-function limparCamposPRC() {
-    document.getElementById('mensPRC').value = '0,00';
-    document.getElementById('dtcancPRC').value = '';
-    document.getElementById('dtvencPRC').value = '';
-    document.getElementById('ISSPRC').value = '0';
-    document.getElementById('IRPRC').value = '0';
-    document.getElementById('PCCPRC').value = '0';
-    document.getElementById('svaPRC').value = '0,00';
-    document.getElementById('qtdiasPRC').value = '';
-    document.getElementById('dtfinPRC').value = '';
-    document.getElementById('VlISSPRC').value = '';
-    document.getElementById('VlIRPRC').value = '';
-    document.getElementById('VlPCCPRC').value = '';
-    document.getElementById('VlPagPRC').value = '';
-    document.getElementById('VlReePRC').value = '';
-
-    document.getElementById('txtPRC').innerHTML = 'Por favor, enviar dados para DI no valor de R$ xxx,xx referente ao pró-rata de cancelamento, que foi do dia xx/xx/xxxx até yy/yy/yyyy no e-mail:';
-    document.getElementById('txtReePRC').innerHTML = 'Por favor, enviar dados para reembolso no valor de R$ xxx,xx referente a pró-rata de cancelamento cobrada a mais, dados bancários para reembolso:';
-
-    mostrarNotificacao("DADOS EXCLUÍDOS", 3000, 'w3-red', 'fa fa-trash-o');
 }
 
 function formatarValorCampo(campo) {
