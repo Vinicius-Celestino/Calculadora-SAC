@@ -228,6 +228,7 @@ function limparCamposNM() {
 }
 
 function mostrarNotificacao(message, duration = 3000, colorClass = 'w3-green', iconClass = 'fa-check') {
+    document.getElementById('notification').style.display = 'table-row';
     var notificationText = document.getElementById('notification-text');
     notificationText.textContent = message;
 
@@ -259,3 +260,40 @@ function formatarValorCampo(campo) {
     valor = (valor / 100).toFixed(2).replace(".", ",");
     campo.value = valor.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
+
+function atualizarVisibilidadeCampos() {
+
+    // Obtém o valor do botão de rádio selecionado
+    var selectedValue = document.querySelector('input[name="contrato"]:checked').value;
+    
+    // Mostra ou oculta os campos com base na seleção
+    if (selectedValue === 'fisica') {
+        document.getElementById('VISSPRC').style.display = 'none';
+        document.getElementById('VIRPRC').style.display = 'none';
+        document.getElementById('VPCCPRC').style.display = 'none';
+        document.getElementById('VRISSPRC').style.display = 'none';
+        document.getElementById('VRIRPRC').style.display = 'none';
+        document.getElementById('VRPCCPRC').style.display = 'none';
+
+    } else if (selectedValue === 'juridica') {
+        document.getElementById('VISSPRC').style.display = 'table-row';
+        document.getElementById('VIRPRC').style.display = 'table-row';
+        document.getElementById('VPCCPRC').style.display = 'table-row';
+        document.getElementById('VRISSPRC').style.display = 'table-row';
+        document.getElementById('VRIRPRC').style.display = 'table-row';
+        document.getElementById('VRPCCPRC').style.display = 'table-row';
+    }
+    limparCamposPRC();
+    document.getElementById('notification').style.display = 'none';
+}
+
+// Adiciona um listener para os botões de rádio
+document.addEventListener('DOMContentLoaded', function() {
+    var radios = document.querySelectorAll('input[name="contrato"]');
+    radios.forEach(function(radio) {
+        radio.addEventListener('change', atualizarVisibilidadeCampos);
+    });
+
+    // Chama a função uma vez para definir o estado inicial
+    atualizarVisibilidadeCampos();
+});

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mostrar/Ocultar Campos</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+        /* Estilo opcional para melhor visualização */
+        .campo-especifico {
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<table class="w3-table w3-bordered">
+    <tr>
+        <td class="col1">O contrato está em nome de:</td>
+        <td class="col2">
+            <!-- Grupo de botões para seleção -->
+            <div class="w3-bar w3-round">
+                <input class="w3-radio" type="radio" id="fisica" name="contrato" value="fisica" checked>
+                <label class="w3-bar-item w3-btn w3-border-right w3-padding-small w3-hover-light-grey" for="fisica">Pessoa Física</label>
+                <input class="w3-radio" type="radio" id="juridica" name="contrato" value="juridica">
+                <label class="w3-bar-item w3-btn w3-padding-small w3-hover-light-grey" for="juridica">Pessoa Jurídica</label>
+            </div>
+        </td>
+    </tr>
+    <tr id="campos-fisica" class="campo-especifico">
+        <td class="col1">Campo específico para Pessoa Física:</td>
+        <td class="col2">
+            <!-- Campos específicos para Pessoa Física -->
+            <input type="text" placeholder="Nome Completo">
+            <input type="text" placeholder="CPF">
+        </td>
+    </tr>
+    <tr id="campos-juridica" class="campo-especifico" style="display: none;">
+        <td class="col1">Campo específico para Pessoa Jurídica:</td>
+        <td class="col2">
+            <!-- Campos específicos para Pessoa Jurídica -->
+            <input type="text" placeholder="Razão Social">
+            <input type="text" placeholder="CNPJ">
+        </td>
+    </tr>
+</table>
+
+<script>
+function atualizarVisibilidadeCampos() {
+    // Obtém o valor do botão de rádio selecionado
+    var selectedValue = document.querySelector('input[name="contrato"]:checked').value;
+    
+    // Mostra ou oculta os campos com base na seleção
+    if (selectedValue === 'fisica') {
+        document.getElementById('campos-fisica').style.display = 'table-row';
+        document.getElementById('campos-juridica').style.display = 'none';
+    } else if (selectedValue === 'juridica') {
+        document.getElementById('campos-fisica').style.display = 'none';
+        document.getElementById('campos-juridica').style.display = 'table-row';
+    }
+}
+
+// Adiciona um listener para os botões de rádio
+document.addEventListener('DOMContentLoaded', function() {
+    var radios = document.querySelectorAll('input[name="contrato"]');
+    radios.forEach(function(radio) {
+        radio.addEventListener('change', atualizarVisibilidadeCampos);
+    });
+
+    // Chama a função uma vez para definir o estado inicial
+    atualizarVisibilidadeCampos();
+});
+</script>
+
+</body>
+</html>

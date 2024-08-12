@@ -10,6 +10,32 @@
     html {
         zoom: 80%;
     }
+
+    /* Para garantir que os botões de rádio não apareçam */
+    .w3-radio {
+        display: none;
+    }
+
+    /* Para garantir que o botão selecionado apareça em vermelho */
+    .w3-radio:checked+label {
+        background-color: #f44336;
+        /* Cor vermelha */
+        color: white;
+    }
+
+    /* Remover sombra do botão ao passar o mouse */
+    .w3-bar .w3-bar-item {
+        box-shadow: none !important;
+        /* Remove a sombra */
+        border: 1px solid #ccc;
+        /* Adiciona borda para visualização */
+    }
+
+    /* Remover bordas dos botões, exceto entre os botões */
+    .w3-bar .w3-bar-item {
+        border: none;
+        /* Remove bordas padrão */
+    }
 </style>
 
 <body>
@@ -136,6 +162,23 @@
                         <td class="col1 w3-cell-top">
                             <table cellpadding="3" cellspacing="3" align="left">
                                 <tr>
+                                    <td class="col1">O contrato está em nome de:<br></td>
+                                    <td class="col2">
+                                        <!-- Grupo de botões para seleção -->
+                                        <div class="w3-bar w3-round">
+                                            <input class="w3-radio" type="radio" id="fisica" name="contrato"
+                                                value="fisica" checked>
+                                            <label
+                                                class="w3-bar-item w3-btn w3-border-right w3-padding-small w3-hover-light-grey"
+                                                for="fisica">Pessoa Física</label>
+                                            <input class="w3-radio" type="radio" id="juridica" name="contrato"
+                                                value="juridica">
+                                            <label class="w3-bar-item w3-btn w3-padding-small w3-hover-light-grey"
+                                                for="juridica">Pessoa Jurídica</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td class="col1">Valor da mensalidade<br><i>(Valor da nota fiscal)</i></td>
                                     <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
                                             value="0,00" id="mensPRC" oninput="formatarValorCampo(this)"></td>
@@ -151,12 +194,12 @@
                                             type="date" id="dtvencPRC"></td>
                                 </tr>
 
-                                <tr>
+                                <tr id="VISSPRC">
                                     <td class="col1">Tem retenção de ISS?<br><i>(Insira a porcentagem)</i></td>
                                     <td class="col2"><input class="w3-input w3-border-red" style="width:200px" value="0"
                                             id="ISSPRC"></td>
                                 </tr>
-                                <tr>
+                                <tr id="VIRPRC">
                                     <td class="col1">Tem retenção de IR?</td>
                                     <td class="col2">
                                         <select class="w3-select w3-border-red" style="width:100px" id="IRPRC">
@@ -165,7 +208,7 @@
                                         </select>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr id="VPCCPRC">
                                     <td class="col1">Tem retenção de PCC?</td>
                                     <td class="col2">
                                         <select class="w3-select w3-border-red" style="width:100px" id="PCCPRC">
@@ -202,17 +245,17 @@
                                     <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
                                             id="dtfinPRC" readonly></td>
                                 </tr>
-                                <tr>
+                                <tr id="VRISSPRC">
                                     <td class="col1">Valor do ISS</td>
                                     <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
                                             id="VlISSPRC" readonly></td>
                                 </tr>
-                                <tr>
+                                <tr id="VRIRPRC">
                                     <td class="col1">Valor do IR</td>
                                     <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
                                             id="VlIRPRC" readonly></td>
                                 </tr>
-                                <tr>
+                                <tr id="VRPCCPRC">
                                     <td class="col1">Valor do PCC</td>
                                     <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
                                             id="VlPCCPRC" readonly></td>
@@ -312,8 +355,8 @@
                             <table cellpadding="3" cellspacing="3" align="left">
                                 <tr>
                                     <td class="col1">Valor da mensalidade<br><i>(Sem parcelamento)</i></td>
-                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px" value="0,00"
-                                            id="mensNM" oninput="formatarValorCampo(this)"></td>
+                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
+                                            value="0,00" id="mensNM" oninput="formatarValorCampo(this)"></td>
                                 </tr>
                                 <tr>
                                     <td class="col1">Quantidade de estrelas</td>
