@@ -59,6 +59,7 @@ function calcularPRI() {
   VlPCC = VlPCC.toFixed(2).replace(".", ",");
   document.getElementById("VlPCCPRI").value = VlPCC.toString().replace(
     /\B(?=(\d{3})+(?!\d))/g,
+    
     "."
   );
   VlFin = VlFin.toFixed(2).replace(".", ",");
@@ -450,6 +451,7 @@ function mensalidadePaga() {
 function validarCampos(ids) {
   for (let id of ids) {
     const elemento = document.getElementById(id);
+    // Verifica se o elemento existe e se é um <select> ou um <input> com o valor padrão vazio
     if (elemento && (elemento.value === "" || elemento.value === "0,00")) {
       console.log(`O campo com ID ${id} está vazio. Preencha todos os campos.`);
       return false;
@@ -481,13 +483,15 @@ function validarCamposPorTipoPessoa() {
         document.getElementById(id).classList.remove("w3-hide");
         camposParaValidar.push(id);
       });
-    } else {
+    } else if (joinville === "1") {
       // Ocultar campos e limpar valores
       idsCampos.forEach((id) => {
         document.getElementById(id).classList.add("w3-hide");
         document.getElementById(id.replace("V", "")).value =
           id === "VISSPRC" ? "0" : "";
       });
+    } else {
+      console.log("indique se a nota é de Joinville!");
     }
   }
 
