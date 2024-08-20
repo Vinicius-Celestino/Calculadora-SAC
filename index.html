@@ -7,7 +7,7 @@
 <script src="Script.js"></script>
 
 <head>
-    <link rel="icon" type="image/png" href="./favicon.png" sizes="64x64">
+    <link rel="icon" type="image/png" href="./icon.png" sizes="64x64">
 </head>
 
 <style>
@@ -61,7 +61,17 @@
         <p id="notification-text" style="margin:0;">Texto copiado</p>
         <i class="fa fa-check" style="font-size:24px"></i>
     </div>
-
+    <div id="modalCamposPreenchidos" class="w3-modal">
+        <div class="w3-modal-content w3-animate-bottom w3-card-4">
+            <header class="w3-container w3-red">
+                <h2>Atenção</h2>
+            </header>
+            <div class="w3-container">
+                <p>Preencha todos os campos para finalizar o cálculo.<button onclick="fecharModal()" class="w3-button w3-red w3-ripple w3-round w3-right w3-margin">OK</button>
+                </hp>
+            </div>
+        </div>
+    </div>
     <div style="margin-left:300px">
         <div id="PRI" class="w3-container calc" style="display: none">
             <h2 class="w3-red w3-round w3-padding-small">PRÓ-RATA DE INÍCIO</h2>
@@ -196,7 +206,7 @@
                                 <tr>
                                     <td class="col1">Valor da mensalidade<br><b><i>(Valor da nota fiscal)</i></b></td>
                                     <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
-                                            value="0,00" id="mensPRC" oninput="formatarValorCampo(this)"></td>
+                                            value="R$ 0,00" id="mensPRC" oninput="formatarValorCampo(this)"></td>
                                 </tr>
                                 <tr id="VJoinvillePRC">
                                     <td class="col1">A nota é de Joinville?</td>
@@ -222,8 +232,8 @@
 
                                 <tr id="VISSPRC">
                                     <td class="col1">Tem retenção de ISS?<br><i>(Insira a porcentagem)</i></td>
-                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px" value="0"
-                                            id="ISSPRC"></td>
+                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
+                                            value="0%" id="ISSPRC" oninput="formatarPercentualCampo(this)"></td>
                                 </tr>
                                 <tr id="VIRPRC">
                                     <td class="col1">Tem retenção de IR?</td>
@@ -256,8 +266,9 @@
                                             onclick="calcularPRC()">Calcular</button>
                                     </td>
                                     <td class="col1">
-                                        <button class="w3-button w3-red" onclick="limparCamposPRC()"
-                                            title="Limpar dados"><i class="fa fa-trash"></i>
+                                        <button class="w3-button w3-red"
+                                            onclick="limparCamposPRC(); visibilidadeJoinville()" title="Limpar dados"><i
+                                                class="fa fa-trash"></i>
                                         </button>
                                     </td>
                                     <td class="col2">
@@ -372,9 +383,6 @@
                                         baixado como desconto.</li>
                                     <li>Os serviços digitais só devem ser considerados, se a monitoria foi
                                         emitida considerando os serviços.</li>
-                                    <li>A retenção de impostos(ISS, PCC e IR) é feita somente para clientes PJ.
-                                        Não descontamos impostos para notas do munício de <b>Joinville</b>,
-                                        mesmo que seja PJ.</li>
                                 </div>
                             </td>
                         </tr>
@@ -491,6 +499,7 @@
                                     </div>
                             </table>
                         </td>
+                    </tr>
                 </table>
             </h6>
         </div>

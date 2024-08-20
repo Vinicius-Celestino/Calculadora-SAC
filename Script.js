@@ -59,7 +59,7 @@ function calcularPRI() {
   VlPCC = VlPCC.toFixed(2).replace(".", ",");
   document.getElementById("VlPCCPRI").value = VlPCC.toString().replace(
     /\B(?=(\d{3})+(?!\d))/g,
-    
+
     "."
   );
   VlFin = VlFin.toFixed(2).replace(".", ",");
@@ -82,16 +82,21 @@ function calcularPRC() {
   var dtcanc = new Date(document.getElementById("dtcancPRC").value);
   var dtvenc = new Date(document.getElementById("dtvencPRC").value);
   var ISS = parseFloat(
-    document.getElementById("ISSPRC").value.replace(",", ".")
+    document.getElementById("ISSPRC").value.replace("%", "").replace(",", ".")
   );
   var mens = parseFloat(
     document
       .getElementById("mensPRC")
-      .value.replace(/\./g, "")
+      .value.replace("R$ ", "")
+      .replace(/\./g, "")
       .replace(",", ".")
   );
   var sva = parseFloat(
-    document.getElementById("svaPRC").value.replace(/\./g, "").replace(",", ".")
+    document
+      .getElementById("svaPRC")
+      .value.replace("R$ ", "")
+      .replace(/\./g, "")
+      .replace(",", ".")
   );
   var IR = document.getElementById("IRPRC").value;
   var PCC = document.getElementById("PCCPRC").value;
@@ -133,13 +138,13 @@ function calcularPRC() {
     document.getElementById("VlPagPRC").value = "TÍTULO INTEGRAL";
     document.getElementById("VlReePRC").value = "TÍTULO INTEGRAL";
     document.getElementById("txtPRC").innerHTML =
-      "<td>Por favor, enviar dados para DI no valor do TÍTULO INTEGRAL referente ao pró-rata de cancelamento, que foi do dia " +
+      "<td class='w3-padding-small w3-round-small'>Por favor, enviar dados para DI no valor do TÍTULO INTEGRAL referente ao pró-rata de cancelamento, que foi do dia " +
       dtfin.toLocaleString().split(",")[0] +
       " até " +
       dtv2.toLocaleString().split(",")[0] +
       " no e-mail:</td>";
     document.getElementById("txtReePRC").innerHTML =
-      "<td>Por favor, enviar dados para DI no valor do TÍTULO INTEGRAL referente ao pró-rata de cancelamento, que foi do dia " +
+      "<td class='w3-padding-small w3-round-small'>Por favor, enviar dados para DI no valor do TÍTULO INTEGRAL referente ao pró-rata de cancelamento, que foi do dia " +
       dtfin.toLocaleString().split(",")[0] +
       " até " +
       dtv2.toLocaleString().split(",")[0] +
@@ -156,7 +161,7 @@ function calcularPRC() {
       "."
     );
     document.getElementById("txtPRC").innerHTML =
-      "<td>Por favor, enviar dados para DI no valor de R$ " +
+      "<td class='w3-padding-small w3-round-small'>Por favor, enviar dados para DI no valor de R$ " +
       VlPag.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") +
       " referente ao pró-rata de cancelamento, que foi do dia " +
       dtfin.toLocaleString().split(",")[0] +
@@ -164,7 +169,7 @@ function calcularPRC() {
       dtv2.toLocaleString().split(",")[0] +
       " no e-mail:</td>";
     document.getElementById("txtReePRC").innerHTML =
-      "<td>Por favor, enviar dados para reembolso no valor de R$ " +
+      "<td class='w3-padding-small w3-round-small'>Por favor, enviar dados para reembolso no valor de R$ " +
       VlRee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") +
       " referente a pró-rata de cancelamento cobrada a mais, dados bancários para reembolso: ";
   }
@@ -278,9 +283,6 @@ function copyValorResultadoPRCById(inputId) {
 
   // Mostra a notificação
   mostrarNotificacao("VALOR COPIADO");
-
-  // Exibe o valor formatado no console
-  console.log(valorFormatado);
 }
 
 function limparCampos(dados, textos) {
@@ -306,13 +308,13 @@ function limparCampos(dados, textos) {
 
 function limparCamposPRC() {
   const dadosPRC = {
-    mensPRC: "0,00",
+    mensPRC: "R$ 0,00",
     dtcancPRC: "",
     dtvencPRC: "",
-    ISSPRC: "0",
+    ISSPRC: "0%",
     IRPRC: "",
     PCCPRC: "",
-    svaPRC: "0,00",
+    svaPRC: "R$ 0,00",
     qtdiasPRC: "",
     dtfinPRC: "",
     VlISSPRC: "",
@@ -326,13 +328,14 @@ function limparCamposPRC() {
 
   const textosPRC = {
     txtPRC:
-      "Por favor, enviar dados para DI no valor de R$ xxx,xx referente ao pró-rata de cancelamento, que foi do dia xx/xx/xxxx até yy/yy/yyyy no e-mail:",
+      "<td class='w3-padding-small w3-round-small'>Por favor, enviar dados para DI no valor de R$ xxx,xx referente ao pró-rata de cancelamento, que foi do dia xx/xx/xxxx até yy/yy/yyyy no e-mail:</td>",
     txtReePRC:
-      "Por favor, enviar dados para reembolso no valor de R$ xxx,xx referente a pró-rata de cancelamento cobrada a mais, dados bancários para reembolso:",
+      "<td class='w3-padding-small w3-round-small'>Por favor, enviar dados para reembolso no valor de R$ xxx,xx referente a pró-rata de cancelamento cobrada a mais, dados bancários para reembolso:</td>",
   };
 
   limparCampos(dadosPRC, textosPRC);
   mensalidadePaga();
+  visibilidadeJoinville();
 }
 
 function limparCamposNM() {
@@ -387,7 +390,13 @@ function mostrarNotificacao(
 function formatarValorCampo(campo) {
   var valor = campo.value.replace(/\D/g, "");
   valor = (valor / 100).toFixed(2).replace(".", ",");
-  campo.value = valor.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  campo.value = "R$ " + valor.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+function formatarPercentualCampo(campo) {
+  var valor = campo.value.replace(/[^0-9,]/g, "");
+  valor = valor.replace(/,+/g, ",");
+  campo.value = valor + "%";
 }
 
 function atualizarVisibilidadeCampos() {
@@ -460,6 +469,23 @@ function validarCampos(ids) {
   return true;
 }
 
+function visibilidadeJoinville() {
+  // Função reseta os campos ao limpar os dados se a nota for de Joinville
+  const tipoPessoa = document.querySelector(
+    'input[name="contrato"]:checked'
+  ).value;
+
+  const visibilidadeISS = document.getElementById("VISSPRC");
+  const visibilidadeIR = document.getElementById("VIRPRC");
+  const visibilidadePCC = document.getElementById("VPCCPRC");
+
+  if (tipoPessoa === "juridica") {
+    visibilidadeISS.classList.remove("w3-hide");
+    visibilidadeIR.classList.remove("w3-hide");
+    visibilidadePCC.classList.remove("w3-hide");
+  }
+}
+
 function validarCamposPorTipoPessoa() {
   const tipoPessoa = document.querySelector(
     'input[name="contrato"]:checked'
@@ -498,11 +524,16 @@ function validarCamposPorTipoPessoa() {
   // Valida os campos necessários
   if (!validarCampos(camposParaValidar)) {
     console.log("Preencha todos os campos");
+    document.getElementById("modalCamposPreenchidos").style.display = "block";
     return false; // Interrompe o cálculo se a validação falhar
   }
-
   return true; // Continua se todos os campos estiverem preenchidos
 }
+
+function fecharModal() {
+  document.getElementById('modalCamposPreenchidos').style.display = 'none';
+}
+
 
 // Adiciona um listener para os botões de rádio
 document.addEventListener("DOMContentLoaded", function () {
