@@ -7,1016 +7,1052 @@
 <script src="Script.js"></script>
 
 <head>
-    <link rel="icon" type="image/png" href="./icon.png" sizes="64x64">
+  <link rel="icon" type="image/png" href="./icon.png" sizes="64x64">
 </head>
 
 <style>
-    html {
-        zoom: 80%;
-    }
+  html {
+    zoom: 80%;
+  }
 
-    /* Para garantir que os botões de rádio não apareçam */
-    .w3-radio {
-        display: none;
-    }
+  .w3-radio {
+    display: none;
+  }
 
-    /* Para garantir que o botão selecionado apareça em vermelho */
-    .w3-radio:checked+label {
-        background-color: #f44336;
-        /* Cor vermelha */
-        color: white;
-    }
+  .w3-radio:checked+label {
+    background-color: #f44336;
+    color: white;
+  }
 
-    /* Remover sombra do botão ao passar o mouse */
-    .w3-bar .w3-bar-item {
-        box-shadow: none !important;
-        /* Remove a sombra */
-        border: 1px solid #ccc;
-        /* Adiciona borda para visualização */
-    }
+  .w3-bar .w3-bar-item {
+    box-shadow: none !important;
+    border: 1px solid #ccc;
+  }
 
-    /* Remover bordas dos botões, exceto entre os botões */
-    .w3-bar .w3-bar-item {
-        border: none;
-        /* Remove bordas padrão */
-    }
+  .w3-bar .w3-bar-item {
+    border: none;
+  }
 </style>
 
 <body>
 
-    <div class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width:300px">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/7/76/Verisure_logo.svg" width="200"
-            style="margin-left:10px;margin-top:10px">
-        <h2 class="w3-bar-item">CALCULADORA SAC TESTE</h2>
-        <button class="w3-bar-item w3-button w3-ripple tablink" onclick="openCalc(event, 'PRI')">PRÓ-RATA DE
-            INÍCIO</button>
-        <button class="w3-bar-item w3-button w3-ripple tablink" onclick="openCalc(event, 'PRC')">PRÓ-RATA DE
-            CANCELAMENTO</button>
-        <button class="w3-bar-item w3-button w3-ripple tablink" onclick="openCalc(event, 'NM')">NEGOCIAR
-            MONITORIA</button>
+  <div class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width:300px">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/7/76/Verisure_logo.svg" width="200"
+      style="margin-left:10px;margin-top:10px">
+    <h2 class="w3-bar-item">CALCULADORA SAC TESTE</h2>
+    <button class="w3-bar-item w3-button w3-ripple tablink" onclick="openCalc(event, 'PRI')">PRÓ-RATA DE
+      INÍCIO</button>
+    <button class="w3-bar-item w3-button w3-ripple tablink" onclick="openCalc(event, 'PRC')">PRÓ-RATA DE
+      CANCELAMENTO</button>
+    <button class="w3-bar-item w3-button w3-ripple tablink" onclick="openCalc(event, 'NM')">NEGOCIAR
+      MONITORIA</button>
+  </div>
+
+  <div id="notification" class="w3-panel w3-green w3-card-4 w3-center w3-round"
+    style="display:none; opacity:0; position:fixed; top:5%; right:2%; width:200px; padding:10px; transition: opacity 0.5s ease, transform 0.5s ease; transform: translateY(-20px); text-shadow:1px 1px 0 #444">
+    <p id="notification-text" style="margin:0;">Texto copiado</p>
+    <i class="fa fa-check" style="font-size:24px"></i>
+  </div>
+  <div id="modalCamposPreenchidos" class="w3-modal">
+    <div class="w3-modal-content w3-animate-bottom w3-card-4">
+      <header class="w3-container w3-red">
+        <h2>Preencha todos os campos!</h2>
+      </header>
+      <div class="w3-container">
+        <p id="mensagemCamposVazios"></p>
+        <button onclick="fecharModal()" class="w3-button w3-red w3-ripple w3-round w3-right w3-margin">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-left:300px">
+    <div id="PRI" class="w3-container calc" style="display: none">
+      <h2 class="w3-red w3-round w3-padding-small">PRÓ-RATA DE INÍCIO</h2>
+
+      <h6>
+        <table cellpadding="3" cellspacing="3" align="left">
+          <tr>
+            <td class="col1">Valor da mensalidade</td>
+            <td class="col2"><input class="w3-input w3-border-red" style="width:200px" value="0" id="mensPRI"
+                oninput="formatarValorCampo(this)"></td>
+          </tr>
+          <tr>
+            <td class="col1">Data de início do contrato</td>
+            <td class="col2"><input class="w3-input w3-border-red" style="width:200px" type="date" id="dtiniPRI"></td>
+          </tr>
+          <tr>
+            <td class="col1">Data de vencimento do título</td>
+            <td class="col2"><input class="w3-input w3-border-red" style="width:200px" type="date" id="dtvencPRI"></td>
+          </tr>
+          <tr>
+            <td class="col1">Tem retenção de ISS?<br><i>(insira a porcentagem)</i></td>
+            <td class="col2"><input class="w3-input w3-border-red" style="width:200px" value="0" id="ISSPRI"></td>
+          </tr>
+          <tr>
+            <td class="col1">Tem retenção de IR?</td>
+            <td class="col2">
+              <select class="w3-select w3-border-red" style="width:100px" id="IRPRI">
+                <option value="0">NÃO</option>
+                <option value="1">SIM</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td class="col1">Tem retenção de PCC?</td>
+            <td class="col2">
+              <select class="w3-select w3-border-red" style="width:100px" id="PCCPRI">
+                <option value="0">NÃO</option>
+                <option value="1">SIM</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td class="col1">Contrato parcelado?</td>
+            <td class="col2">
+              <select class="w3-select w3-border-red" style="width:100px" id="FinPRI">
+                <option value="0">NÃO</option>
+                <option value="1">SIM</option>
+              </select>
+            </td>
+          </tr>
+          <tr colspan="1">
+            <td class="col1">
+              <button class="w3-button w3-red w3-ripple w3-button w3-block" onclick="calcularPRI()">Calcular</button>
+            </td>
+            <td class="col2">
+            </td>
+          </tr>
+          <tr>
+            <td class="col1">Quantidade de dias utilizados</td>
+            <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="qtdiasPRI" readonly></td>
+          </tr>
+          <tr>
+            <td class="col1">Valor do ISS</td>
+            <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="VlISSPRI" readonly></td>
+          </tr>
+          <tr>
+            <td class="col1">Valor do IR</td>
+            <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="VlIRPRI" readonly></td>
+          </tr>
+          <tr>
+            <td class="col1">Valor do PCC</td>
+            <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="VlPCCPRI" readonly></td>
+          </tr>
+          <tr>
+            <td class="col1">Valor do parcelamento</td>
+            <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="VlFinPRI" readonly></td>
+          </tr>
+          <tr>
+            <td class="col1">Valor a pagar</td>
+            <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="VlPagPRI" readonly></td>
+          </tr>
+        </table>
+      </h6>
     </div>
 
-    <div id="notification" class="w3-panel w3-green w3-card-4 w3-center w3-round"
-        style="display:none; opacity:0; position:fixed; top:5%; right:2%; width:200px; padding:10px; transition: opacity 0.5s ease, transform 0.5s ease; transform: translateY(-20px); text-shadow:1px 1px 0 #444">
-        <p id="notification-text" style="margin:0;">Texto copiado</p>
-        <i class="fa fa-check" style="font-size:24px"></i>
-    </div>
+    <div id="PRC" class="w3-container calc" style="display: none">
+      <h2 class="w3-red w3-round w3-padding-small">PRÓ-RATA DE CANCELAMENTO</h2>
 
-    <div style="margin-left:300px">
-        <div id="PRI" class="w3-container calc" style="display: none">
-            <h2 class="w3-red w3-round w3-padding-small">PRÓ-RATA DE INÍCIO</h2>
+      <h6>
+        <table cellpadding="3" cellspacing="3" align="left">
+          <tr>
+            <td class="col1 w3-cell-top">
+              <table cellpadding="3" cellspacing="3" align="left">
+                <tr>
+                  <td class="col1">O contrato está em nome de:<br></td>
+                  <td class="col2">
+                    <!-- Grupo de botões para seleção -->
+                    <div class="w3-bar w3-round">
+                      <input class="w3-radio" type="radio" id="fisica" name="contrato" value="fisica" checked>
+                      <label class="w3-bar-item w3-btn w3-border-right w3-padding-small w3-hover-light-grey"
+                        for="fisica">Pessoa Física</label>
+                      <input class="w3-radio" type="radio" id="juridica" name="contrato" value="juridica">
+                      <label class="w3-bar-item w3-btn w3-padding-small w3-hover-light-grey" for="juridica">Pessoa
+                        Jurídica</label>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="col1">A mensalidade a ser calculada foi paga?</td>
+                  <td class="col2">
+                    <select class="w3-select w3-border-red" style="width:100px" id="mensPAGA"
+                      onchange="mensalidadePaga()">
+                      <option value="" disabled selected>Selecionar</option>
+                      <option value="0">Não</option>
+                      <option value="1">Sim</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="col1">Valor da mensalidade<br><b><i>(Valor da nota fiscal)</i></b></td>
+                  <td class="col2"><input class="w3-input w3-border-red" style="width:200px" value="R$ 0,00"
+                      id="mensPRC" oninput="formatarValorCampo(this)"></td>
+                </tr>
+                <tr id="VJoinvillePRC">
+                  <td class="col1">A nota é de Joinville?</td>
+                  <td class="col2">
+                    <select class="w3-select w3-border-red" style="width:100px" id="JoinvillePRC"
+                      onchange="controlarVisibilidadeCampos()">
+                      <option value="" disabled selected>Selecionar</option>
+                      <option value="0">Não</option>
+                      <option value="1">Sim</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="col1">Data de solicitação de cancelamento</td>
+                  <td class="col2"><input class="w3-input w3-border-red" style="width:200px" type="date" id="dtcancPRC">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="col1">Data de vencimento do título</td>
+                  <td class="col2"><input class="w3-input w3-border-red" style="width:200px" type="date" id="dtvencPRC">
+                  </td>
+                </tr>
 
-            <h6>
-                <table cellpadding="3" cellspacing="3" align="left">
-                    <tr>
-                        <td class="col1">Valor da mensalidade</td>
-                        <td class="col2"><input class="w3-input w3-border-red" style="width:200px" value="0"
-                                id="mensPRI" oninput="formatarValorCampo(this)"></td>
-                    </tr>
-                    <tr>
-                        <td class="col1">Data de início do contrato</td>
-                        <td class="col2"><input class="w3-input w3-border-red" style="width:200px" type="date"
-                                id="dtiniPRI"></td>
-                    </tr>
-                    <tr>
-                        <td class="col1">Data de vencimento do título</td>
-                        <td class="col2"><input class="w3-input w3-border-red" style="width:200px" type="date"
-                                id="dtvencPRI"></td>
-                    </tr>
-                    <tr>
-                        <td class="col1">Tem retenção de ISS?<br><i>(insira a porcentagem)</i></td>
-                        <td class="col2"><input class="w3-input w3-border-red" style="width:200px" value="0"
-                                id="ISSPRI"></td>
-                    </tr>
-                    <tr>
-                        <td class="col1">Tem retenção de IR?</td>
-                        <td class="col2">
-                            <select class="w3-select w3-border-red" style="width:100px" id="IRPRI">
-                                <option value="0">NÃO</option>
-                                <option value="1">SIM</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col1">Tem retenção de PCC?</td>
-                        <td class="col2">
-                            <select class="w3-select w3-border-red" style="width:100px" id="PCCPRI">
-                                <option value="0">NÃO</option>
-                                <option value="1">SIM</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col1">Contrato parcelado?</td>
-                        <td class="col2">
-                            <select class="w3-select w3-border-red" style="width:100px" id="FinPRI">
-                                <option value="0">NÃO</option>
-                                <option value="1">SIM</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr colspan="1">
-                        <td class="col1">
-                            <button class="w3-button w3-red w3-ripple w3-button w3-block"
-                                onclick="calcularPRI()">Calcular</button>
-                        </td>
-                        <td class="col2">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col1">Quantidade de dias utilizados</td>
-                        <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="qtdiasPRI"
-                                readonly></td>
-                    </tr>
-                    <tr>
-                        <td class="col1">Valor do ISS</td>
-                        <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="VlISSPRI"
-                                readonly></td>
-                    </tr>
-                    <tr>
-                        <td class="col1">Valor do IR</td>
-                        <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="VlIRPRI"
-                                readonly></td>
-                    </tr>
-                    <tr>
-                        <td class="col1">Valor do PCC</td>
-                        <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="VlPCCPRI"
-                                readonly></td>
-                    </tr>
-                    <tr>
-                        <td class="col1">Valor do parcelamento</td>
-                        <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="VlFinPRI"
-                                readonly></td>
-                    </tr>
-                    <tr>
-                        <td class="col1">Valor a pagar</td>
-                        <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="VlPagPRI"
-                                readonly></td>
-                    </tr>
-                </table>
-            </h6>
-        </div>
+                <tr id="VISSPRC">
+                  <td class="col1">Tem retenção de ISS?<br><i>(Insira a porcentagem)</i></td>
+                  <td class="col2"><input class="w3-input w3-border-red" style="width:200px" value="0%" id="ISSPRC"
+                      oninput="formatarPercentualCampo(this)"></td>
+                </tr>
+                <tr id="VIRPRC">
+                  <td class="col1">Tem retenção de IR?</td>
+                  <td class="col2">
+                    <select class="w3-select w3-border-red" style="width:100px" id="IRPRC">
+                      <option value="" disabled selected>Selecionar</option>
+                      <option value="0">Não</option>
+                      <option value="1">Sim</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr id="VPCCPRC">
+                  <td class="col1">Tem retenção de PCC?</td>
+                  <td class="col2">
+                    <select class="w3-select w3-border-red" style="width:100px" id="PCCPRC">
+                      <option value="" disabled selected>Selecionar</option>
+                      <option value="0">Não</option>
+                      <option value="1">Sim</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="col1">Tem serviços digitais?<br><i>(Insira o valor total do SVA)</i></td>
+                  <td class="col2"><input class="w3-input w3-border-red" style="width:200px" value="0,00" id="svaPRC"
+                      oninput="formatarValorCampo(this)"></td>
+                </tr>
+                <tr colspan="1">
+                  <td class="col1">
+                    <button class="w3-button w3-red w3-ripple w3-button w3-block"
+                      onclick="calcularPRC()">Calcular</button>
+                  </td>
+                  <td class="col1">
+                    <button class="w3-button w3-red" onclick="limparCamposPRC(); visibilidadeJoinville()"
+                      title="Limpar dados"><i class="fa fa-trash"></i>
+                    </button>
+                  </td>
+                  <td class="col2">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="col1">Quantidade de dias utilizados</td>
+                  <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="qtdiasPRC" readonly>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="col1">Data final do aviso prévio de 30 dias</td>
+                  <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="dtfinPRC" readonly>
+                  </td>
+                </tr>
+                <tr id="VRISSPRC">
+                  <td class="col1">Valor do ISS</td>
+                  <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="VlISSPRC" readonly>
+                  </td>
+                </tr>
+                <tr id="VRIRPRC">
+                  <td class="col1">Valor do IR</td>
+                  <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="VlIRPRC" readonly></td>
+                </tr>
+                <tr id="VRPCCPRC">
+                  <td class="col1">Valor do PCC</td>
+                  <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="VlPCCPRC" readonly>
+                  </td>
+                </tr>
+                <tr id="TRVlPagPRC" class="w3-hide">
+                  <td class="col1"><b>Valor a pagar<br><i>(Envio de D.I)</i></b></td>
+                  <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="VlPagPRC" readonly>
+                  </td>
+                  <td><button class="w3-button w3-red w3-ripple w3-round-large" title="Copiar valor a pagar"
+                      onclick="copyValorResultadoPRCById('VlPagPRC')"><i class="fa fa-copy"></i>
+                    </button></td>
+                </tr>
+                <tr id="TRVlReePRC" class="w3-hide">
+                  <td class="col1 "><b>Valor a ser reembolsado<br><i>(Solicitação de reembolso
+                        GOA)</i></b></td>
+                  <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="VlReePRC" readonly>
+                  </td>
+                  <td><button class="w3-button w3-red w3-ripple w3-round-large" title="Copiar valor a ser reembolsado"
+                      onclick="copyValorResultadoPRCById('VlReePRC')"><i class="fa fa-copy"></i>
+                    </button></td>
+                </tr>
+                <tr id="Resultado">
+                  <td class="col1"><i class="w3-text-red">Atenção</i><br><b>Informe se a mensalidade
+                      foi paga<br>para ver o processo a ser realizado</b></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
 
-        <div id="PRC" class="w3-container calc" style="display: none">
-            <h2 class="w3-red w3-round w3-padding-small">PRÓ-RATA DE CANCELAMENTO</h2>
-
-            <h6>
-                <table cellpadding="3" cellspacing="3" align="left">
-                    <tr>
-                        <td class="col1 w3-cell-top">
-                            <table cellpadding="3" cellspacing="3" align="left">
-                                <tr>
-                                    <td class="col1">O contrato está em nome de:<br></td>
-                                    <td class="col2">
-                                        <!-- Grupo de botões para seleção -->
-                                        <div class="w3-bar w3-round">
-                                            <input class="w3-radio" type="radio" id="fisica" name="contrato"
-                                                value="fisica" checked>
-                                            <label
-                                                class="w3-bar-item w3-btn w3-border-right w3-padding-small w3-hover-light-grey"
-                                                for="fisica">Pessoa Física</label>
-                                            <input class="w3-radio" type="radio" id="juridica" name="contrato"
-                                                value="juridica">
-                                            <label class="w3-bar-item w3-btn w3-padding-small w3-hover-light-grey"
-                                                for="juridica">Pessoa Jurídica</label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col1">A mensalidade a ser calculada foi paga?</td>
-                                    <td class="col2">
-                                        <select class="w3-select w3-border-red" style="width:100px" id="mensPAGA"
-                                            onchange="mensalidadePaga()">
-                                            <option value="" disabled selected>Selecionar</option>
-                                            <option value="0">Não</option>
-                                            <option value="1">Sim</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col1">Valor da mensalidade<br><b><i>(Valor da nota fiscal)</i></b></td>
-                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
-                                            value="0,00" id="mensPRC" oninput="formatarValorCampo(this)"></td>
-                                </tr>
-                                <tr id="VJoinvillePRC">
-                                    <td class="col1">A nota é de Joinville?</td>
-                                    <td class="col2">
-                                        <select class="w3-select w3-border-red" style="width:100px" id="JoinvillePRC"
-                                            onchange="validarCamposPorTipoPessoa()">
-                                            <option value="" disabled selected>Selecionar</option>
-                                            <option value="0">Não</option>
-                                            <option value="1">Sim</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col1">Data de solicitação de cancelamento</td>
-                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
-                                            type="date" id="dtcancPRC"></td>
-                                </tr>
-                                <tr>
-                                    <td class="col1">Data de vencimento do título</td>
-                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
-                                            type="date" id="dtvencPRC"></td>
-                                </tr>
-
-                                <tr id="VISSPRC">
-                                    <td class="col1">Tem retenção de ISS?<br><i>(Insira a porcentagem)</i></td>
-                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px" value="0"
-                                            id="ISSPRC"></td>
-                                </tr>
-                                <tr id="VIRPRC">
-                                    <td class="col1">Tem retenção de IR?</td>
-                                    <td class="col2">
-                                        <select class="w3-select w3-border-red" style="width:100px" id="IRPRC">
-                                            <option value="" disabled selected>Selecionar</option>
-                                            <option value="0">Não</option>
-                                            <option value="1">Sim</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr id="VPCCPRC">
-                                    <td class="col1">Tem retenção de PCC?</td>
-                                    <td class="col2">
-                                        <select class="w3-select w3-border-red" style="width:100px" id="PCCPRC">
-                                            <option value="" disabled selected>Selecionar</option>
-                                            <option value="0">Não</option>
-                                            <option value="1">Sim</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col1">Tem serviços digitais?<br><i>(Insira o valor total do SVA)</i></td>
-                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
-                                            value="0,00" id="svaPRC" oninput="formatarValorCampo(this)"></td>
-                                </tr>
-                                <tr colspan="1">
-                                    <td class="col1">
-                                        <button class="w3-button w3-red w3-ripple w3-button w3-block"
-                                            onclick="calcularPRC()">Calcular</button>
-                                    </td>
-                                    <td class="col1">
-                                        <button class="w3-button w3-red" onclick="limparCamposPRC()"
-                                            title="Limpar dados"><i class="fa fa-trash"></i>
-                                        </button>
-                                    </td>
-                                    <td class="col2">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col1">Quantidade de dias utilizados</td>
-                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
-                                            id="qtdiasPRC" readonly></td>
-                                </tr>
-                                <tr>
-                                    <td class="col1">Data final do aviso prévio de 30 dias</td>
-                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
-                                            id="dtfinPRC" readonly></td>
-                                </tr>
-                                <tr id="VRISSPRC">
-                                    <td class="col1">Valor do ISS</td>
-                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
-                                            id="VlISSPRC" readonly></td>
-                                </tr>
-                                <tr id="VRIRPRC">
-                                    <td class="col1">Valor do IR</td>
-                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
-                                            id="VlIRPRC" readonly></td>
-                                </tr>
-                                <tr id="VRPCCPRC">
-                                    <td class="col1">Valor do PCC</td>
-                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
-                                            id="VlPCCPRC" readonly></td>
-                                </tr>
-                                <tr id="TRVlPagPRC" class="w3-hide">
-                                    <td class="col1"><b>Valor a pagar<br><i>(Envio de D.I)</i></b></td>
-                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
-                                            id="VlPagPRC" readonly></td>
-                                    <td><button class="w3-button w3-red w3-ripple w3-round-large"
-                                            title="Copiar valor a pagar"
-                                            onclick="copyValorResultadoPRCById('VlPagPRC')"><i class="fa fa-copy"></i>
-                                        </button></td>
-                                </tr>
-                                <tr id="TRVlReePRC" class="w3-hide">
-                                    <td class="col1 "><b>Valor a ser reembolsado<br><i>(Solicitação de reembolso
-                                                GOA)</i></b></td>
-                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
-                                            id="VlReePRC" readonly></td>
-                                    <td><button class="w3-button w3-red w3-ripple w3-round-large"
-                                            title="Copiar valor a ser reembolsado"
-                                            onclick="copyValorResultadoPRCById('VlReePRC')"><i class="fa fa-copy"></i>
-                                        </button></td>
-                                </tr>
-                                <tr id="Resultado">
-                                    <td class="col1"><i class="w3-text-red">Atenção</i><br><b>Informe se a mensalidade
-                                            foi paga<br>para ver o processo a ser realizado</b></td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-
-                </table>
+        </table>
+        </td>
+        <td class="col2" style="width:50px"></td>
+        <td class="col3 w3-cell-top">
+          <table class="w3-card w3-light-grey" cellpadding="3" cellspacing="13">
+            <tbody id="blocoEnvioDI" class="w3-hide">
+              <tr align="center" class="w3-light-grey">
+                <td>
+                  <b>ENVIO DE D.I</b> ABRIR O.S. PARA:<br><u><i>SAC > BACKOFFICE > SOLICITAÇÃO
+                      ENVIO DI (DEPÓSITO
+                      IDENTIFICADO)</u></i>
                 </td>
-                <td class="col2" style="width:50px"></td>
-                <td class="col3 w3-cell-top">
-                    <table class="w3-card w3-light-grey" cellpadding="3" cellspacing="13">
-                        <tbody id="blocoEnvioDI" class="w3-hide">
-                            <tr align="center" class="w3-light-grey">
-                                <td>
-                                    <b>ENVIO DE D.I</b> ABRIR O.S. PARA:<br><u><i>SAC > BACKOFFICE > SOLICITAÇÃO
-                                            ENVIO DI (DEPÓSITO
-                                            IDENTIFICADO)</u></i>
-                                </td>
-                            </tr>
-                            <tr class="w3-dark-grey" align="center" id="txtPRC">
-                                <td>Por favor, enviar dados para DI no valor de R$ xxx,xx referente ao pró-rata de
-                                    cancelamento, que foi do dia xx/xx/xxxx até yy/yy/yyyy no e-mail:</td>
-                            </tr>
-                            <tr align="center">
-                                <td>
-                                    <button class="w3-button w3-red w3-ripple w3-round-large"
-                                        onclick="copyTextById('txtPRC')"
-                                        title="Copiar descrição a ser inserida na abertura da O.S">Copiar texto</button>
-                                </td>
-                            </tr>
-                        </tbody>
-
-                        <tbody id="blocoReembolso" class="w3-hide">
-                            <tr align="center" class="w3-light-grey">
-                                <td>
-                                    <b>REEMBOLSO MENSALIDADE PAGA A MAIS</b> ABRIR O.S. PARA:<br><u><i>CADASTRO >
-                                            CADASTRO > SOLICITAÇÃO DE REEMBOLSO</u></i>
-                                </td>
-                            </tr>
-                            <tr class="w3-dark-grey" align="center" id="txtReePRC">
-                                <td>Por favor, enviar dados para reembolso no valor de R$ xxx,xx referente a
-                                    pró-rata de
-                                    cancelamento cobrada a mais, dados bancários para reembolso:</td>
-                            </tr>
-                            <tr align="center">
-                                <td>
-                                    <button class="w3-button w3-red w3-ripple w3-round-large w3-border"
-                                        onclick="copyTextById('txtReePRC')"
-                                        title="Copiar descrição a ser inserida na abertura da O.S">Copiar texto</button>
-                                </td>
-                            </tr>
-                        </tbody>
-
-                        <tr>
-                            <td>
-                                <div class="w3-panel w3-pale w3-leftbar w3-border-red">
-                                    <i class="w3-text-red">Atenção!</i>
-                                    <li>Devoluções acontecem somente para uma conta do CPF ou CNPJ titular do
-                                        contrato.</li>
-                                    <li>Antes de realizar o cálculo, confirme se de fato o valor foi pago, e não
-                                        baixado como desconto.</li>
-                                    <li>Os serviços digitais só devem ser considerados, se a monitoria foi
-                                        emitida considerando os serviços.</li>
-                                    <li>A retenção de impostos(ISS, PCC e IR) é feita somente para clientes PJ.
-                                        Não descontamos impostos para notas do munício de <b>Joinville</b>,
-                                        mesmo que seja PJ.</li>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
+              </tr>
+              <tr class="w3-dark-grey" align="center" id="txtPRC">
+                <td>Por favor, enviar dados para DI no valor de R$ xxx,xx referente ao pró-rata de
+                  cancelamento, que foi do dia xx/xx/xxxx até yy/yy/yyyy no e-mail:</td>
+              </tr>
+              <tr align="center">
+                <td>
+                  <button class="w3-button w3-red w3-ripple w3-round-large" onclick="copyTextById('txtPRC')"
+                    title="Copiar descrição a ser inserida na abertura da O.S">Copiar texto</button>
                 </td>
-            </h6>
-        </div>
+              </tr>
+            </tbody>
 
-        <div id="NM" class="w3-container calc" style="display: none">
-            <h2 class="w3-red w3-round w3-padding-small">NEGOCIAR MONITORIA</h2>
+            <tbody id="blocoReembolso" class="w3-hide">
+              <tr align="center" class="w3-light-grey">
+                <td>
+                  <b>REEMBOLSO MENSALIDADE PAGA A MAIS</b> ABRIR O.S. PARA:<br><u><i>CADASTRO >
+                      CADASTRO > SOLICITAÇÃO DE REEMBOLSO</u></i>
+                </td>
+              </tr>
+              <tr class="w3-dark-grey" align="center" id="txtReePRC">
+                <td>Por favor, enviar dados para reembolso no valor de R$ xxx,xx referente a
+                  pró-rata de
+                  cancelamento cobrada a mais, dados bancários para reembolso:</td>
+              </tr>
+              <tr align="center">
+                <td>
+                  <button class="w3-button w3-red w3-ripple w3-round-large w3-border"
+                    onclick="copyTextById('txtReePRC')"
+                    title="Copiar descrição a ser inserida na abertura da O.S">Copiar texto</button>
+                </td>
+              </tr>
+            </tbody>
 
-            <h6>
-                <table cellpadding="3" cellspacing="3" align="left">
-                    <tr>
-                        <td class="col1 w3-cell-top">
-                            <table cellpadding="3" cellspacing="3" align="left">
-                                <tr>
-                                    <td class="col1">Valor da mensalidade<br><i>(Sem parcelamento)</i></td>
-                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
-                                            value="0,00" id="mensNM" oninput="formatarValorCampo(this)"></td>
-                                </tr>
-                                <tr>
-                                    <td class="col1">Quantidade de estrelas</td>
-                                    <td class="col2">
-                                        <select class="w3-select w3-border-red" style="width:100px" id="starNM">
-                                            <option value="1">★</option>
-                                            <option value="2">★★</option>
-                                            <option value="3">★★★</option>
-                                            <option value="4">★★★★</option>
-                                            <option value="5">★★★★★</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col1">Data de início do contrato</td>
-                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
-                                            type="date" id="dtiniNM"></td>
-                                </tr>
-                                <tr>
-                                    <td class="col1">Contrato parcelado?</td>
-                                    <td class="col2">
-                                        <select class="w3-select w3-border-red" style="width:100px" id="FinNM">
-                                            <option value="0">NÃO</option>
-                                            <option value="1">SIM</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr colspan="1">
-                                    <td class="col1">
-                                        <button class="w3-button w3-red w3-ripple w3-button w3-block"
-                                            onclick="calcularNM()">Calcular</button>
-                                    </td>
-                                    <td class="col1">
-                                        <button class="w3-button w3-red" onclick="limparCamposNM()"
-                                            title="Limpar dados"><i class="fa fa-trash"></i>
-                                        </button>
-                                    </td>
-                                    <td class="col2">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col1">Porcentagem de desconto</td>
-                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
-                                            id="descNM" readonly></td>
-                                </tr>
-                                <tr>
-                                    <td class="col1">Valor do total do desconto</td>
-                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
-                                            id="VldescNM" readonly></td>
-                                </tr>
-                                <tr>
-                                    <td class="col1">Valor do desconto por mês<br><i>(durante 3 meses)</i></td>
-                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
-                                            id="VldescmesNM"></td>
-                                </tr>
-                                <tr>
-                                    <td class="col1">Valor do parcelamento</td>
-                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
-                                            id="VlFinNM" readonly></td>
-                                </tr>
-                                <tr>
-                                    <td class="col1">Valor a pagar</td>
-                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
-                                            id="VlPagNM" readonly></td>
-                                </tr>
-                            </table>
-                        </td>
-                        <td class="col2" style="width:50px"></td>
-                        <td class="col3 w3-cell-top">
-                            <table class="w3-card w3-light-grey" cellpadding="3" cellspacing="3" align="left">
-                                <tr align="center">
-                                    <td>
-                                        ABRIR O.S. PARA:<br><b><i>CADASTRO > CADASTRO > APLICAÇÃO DE DESCONTO</b></i>
-                                    </td>
-                                </tr>
-                                <tr class="w3-dark-grey" align="center" id="txtNM">
-                                    <td>Favor aplicar o desconto de x,xx% na mensalidade durante 3 meses. Total de
-                                        desconto: R$ xx,xx diluído em 3x de R$ xx,xx</td>
-                                </tr>
-                                <tr align="center">
-                                    <td>
-                                        <button class="w3-button w3-red w3-ripple w3-round-large"
-                                            onclick="copyTextById('txtNM')"
-                                            title="Copiar descrição a ser inserida na abertura da O.S">Copiar
-                                            texto</button>
-                                    </td>
-                                </tr>
-                                <td>
-                                    <div class="w3-panel w3-pale w3-leftbar w3-border-red w3-margin-left">
-                                        <i class="w3-text"><b>Regras</b></i>
-                                        <li>Não pode ter título vencido.</li>
-                                        <li>Não pode ter recebido desconto nos últimos 12 meses.</li>
-                                        <li>Deve ter mais de 6 meses de contrato.</li>
-                                    </div>
-                            </table>
-                        </td>
-                </table>
-            </h6>
-        </div>
-
+            <tr>
+              <td>
+                <div class="w3-panel w3-pale w3-leftbar w3-border-red">
+                  <i class="w3-text-red">Atenção!</i>
+                  <li>Devoluções acontecem somente para uma conta do CPF ou CNPJ titular do
+                    contrato.</li>
+                  <li>Antes de realizar o cálculo, confirme se de fato o valor foi pago, e não
+                    baixado como desconto.</li>
+                  <li>Os serviços digitais só devem ser considerados, se a monitoria foi
+                    emitida considerando os serviços.</li>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </h6>
     </div>
+
+    <div id="NM" class="w3-container calc" style="display: none">
+      <h2 class="w3-red w3-round w3-padding-small">NEGOCIAR MONITORIA</h2>
+
+      <h6>
+        <table cellpadding="3" cellspacing="3" align="left">
+          <tr>
+            <td class="col1 w3-cell-top">
+              <table cellpadding="3" cellspacing="3" align="left">
+                <tr>
+                  <td class="col1">Valor da mensalidade<br><i>(Sem parcelamento)</i></td>
+                  <td class="col2"><input class="w3-input w3-border-red" style="width:200px" value="0,00" id="mensNM"
+                      oninput="formatarValorCampo(this)"></td>
+                </tr>
+                <tr>
+                  <td class="col1">Quantidade de estrelas</td>
+                  <td class="col2">
+                    <select class="w3-select w3-border-red" style="width:100px" id="starNM">
+                      <option value="1">★</option>
+                      <option value="2">★★</option>
+                      <option value="3">★★★</option>
+                      <option value="4">★★★★</option>
+                      <option value="5">★★★★★</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="col1">Data de início do contrato</td>
+                  <td class="col2"><input class="w3-input w3-border-red" style="width:200px" type="date" id="dtiniNM">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="col1">Contrato parcelado?</td>
+                  <td class="col2">
+                    <select class="w3-select w3-border-red" style="width:100px" id="FinNM">
+                      <option value="0">NÃO</option>
+                      <option value="1">SIM</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr colspan="1">
+                  <td class="col1">
+                    <button class="w3-button w3-red w3-ripple w3-button w3-block"
+                      onclick="calcularNM()">Calcular</button>
+                  </td>
+                  <td class="col1">
+                    <button class="w3-button w3-red" onclick="limparCamposNM()" title="Limpar dados"><i
+                        class="fa fa-trash"></i>
+                    </button>
+                  </td>
+                  <td class="col2">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="col1">Porcentagem de desconto</td>
+                  <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="descNM" readonly></td>
+                </tr>
+                <tr>
+                  <td class="col1">Valor do total do desconto</td>
+                  <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="VldescNM" readonly>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="col1">Valor do desconto por mês<br><i>(durante 3 meses)</i></td>
+                  <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="VldescmesNM"></td>
+                </tr>
+                <tr>
+                  <td class="col1">Valor do parcelamento</td>
+                  <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="VlFinNM" readonly></td>
+                </tr>
+                <tr>
+                  <td class="col1">Valor a pagar</td>
+                  <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="VlPagNM" readonly></td>
+                </tr>
+              </table>
+            </td>
+            <td class="col2" style="width:50px"></td>
+            <td class="col3 w3-cell-top">
+              <table class="w3-card w3-light-grey" cellpadding="3" cellspacing="3" align="left">
+                <tr align="center">
+                  <td>
+                    ABRIR O.S. PARA:<br><b><i>CADASTRO > CADASTRO > APLICAÇÃO DE DESCONTO</b></i>
+                  </td>
+                </tr>
+                <tr class="w3-dark-grey" align="center" id="txtNM">
+                  <td>Favor aplicar o desconto de x,xx% na mensalidade durante 3 meses. Total de
+                    desconto: R$ xx,xx diluído em 3x de R$ xx,xx</td>
+                </tr>
+                <tr align="center">
+                  <td>
+                    <button class="w3-button w3-red w3-ripple w3-round-large" onclick="copyTextById('txtNM')"
+                      title="Copiar descrição a ser inserida na abertura da O.S">Copiar
+                      texto</button>
+                  </td>
+                </tr>
+                <td>
+                  <div class="w3-panel w3-pale w3-leftbar w3-border-red w3-margin-left">
+                    <i class="w3-text"><b>Regras</b></i>
+                    <li>Não pode ter título vencido.</li>
+                    <li>Não pode ter recebido desconto nos últimos 12 meses.</li>
+                    <li>Deve ter mais de 6 meses de contrato.</li>
+                  </div>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </h6>
+    </div>
+
+  </div>
 
 </body>
 
 <script>
-    function openCalc(evt, calcName) {
-  var i, x, tablinks;
-  x = document.getElementsByClassName("calc");
-  for (i = 0; i < x.length; i++) {
-    x[i].style.display = "none";
-  }
-  tablinks = document.getElementsByClassName("tablink");
-  for (i = 0; i < x.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" w3-red", "");
-  }
-  document.getElementById(calcName).style.display = "block";
-  evt.currentTarget.className += " w3-red";
-}
-
-function calcularPRI() {
-  const dt30 = new Date("December 31, 2021");
-  const dt40 = new Date("February 28, 2023");
-
-  var dtini = new Date(document.getElementById("dtiniPRI").value);
-  var dtvenc = new Date(document.getElementById("dtvencPRI").value);
-  var ISS = parseFloat(
-    document.getElementById("ISSPRI").value.replace(",", ".")
-  );
-  var mens = parseFloat(
-    document
-      .getElementById("mensPRI")
-      .value.replace(/\./g, "")
-      .replace(",", ".")
-  );
-  var IR = document.getElementById("IRPRI").value;
-  var PCC = document.getElementById("PCCPRI").value;
-  var Fin = document.getElementById("FinPRI").value;
-
-  var qtdias = Math.ceil(Math.abs(dtvenc - dtini) / (1000 * 60 * 60 * 24));
-  var VlISS = (ISS / 100) * ((mens / 30) * qtdias);
-  var VlIR = IR * 0.01 * ((mens / 30) * qtdias);
-  var VlPCC = PCC * 0.0465 * ((mens / 30) * qtdias);
-  var VlFin = 0;
-  if (dtini <= dt30) {
-    VlFin = Fin * 30;
-  } else if (dtini <= dt40) {
-    VlFin = Fin * 40;
-  } else {
-    VlFin = Fin * 50;
-  }
-  var VlPag = (mens / 30) * qtdias - VlISS - VlIR - VlPCC + VlFin;
-
-  document.getElementById("qtdiasPRI").value = qtdias;
-  VlISS = VlISS.toFixed(2).replace(".", ",");
-  document.getElementById("VlISSPRI").value = VlISS.toString().replace(
-    /\B(?=(\d{3})+(?!\d))/g,
-    "."
-  );
-  VlIR = VlIR.toFixed(2).replace(".", ",");
-  document.getElementById("VlIRPRI").value = VlIR.toString().replace(
-    /\B(?=(\d{3})+(?!\d))/g,
-    "."
-  );
-  VlPCC = VlPCC.toFixed(2).replace(".", ",");
-  document.getElementById("VlPCCPRI").value = VlPCC.toString().replace(
-    /\B(?=(\d{3})+(?!\d))/g,
-    
-    "."
-  );
-  VlFin = VlFin.toFixed(2).replace(".", ",");
-  document.getElementById("VlFinPRI").value = VlFin.toString().replace(
-    /\B(?=(\d{3})+(?!\d))/g,
-    "."
-  );
-  VlPag = VlPag.toFixed(2).replace(".", ",");
-  document.getElementById("VlPagPRI").value = VlPag.toString().replace(
-    /\B(?=(\d{3})+(?!\d))/g,
-    "."
-  );
-}
-
-function calcularPRC() {
-  if (!validarCamposPorTipoPessoa()) {
-    return; // Interrompe o cálculo se a validação falhar
+  function openCalc(evt, calcName) {
+    var i, x, tablinks;
+    x = document.getElementsByClassName("calc");
+    for (i = 0; i < x.length; i++) {
+      x[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablink");
+    for (i = 0; i < x.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" w3-red", "");
+    }
+    document.getElementById(calcName).style.display = "block";
+    evt.currentTarget.className += " w3-red";
   }
 
-  var dtcanc = new Date(document.getElementById("dtcancPRC").value);
-  var dtvenc = new Date(document.getElementById("dtvencPRC").value);
-  var ISS = parseFloat(
-    document.getElementById("ISSPRC").value.replace(",", ".")
-  );
-  var mens = parseFloat(
-    document
-      .getElementById("mensPRC")
-      .value.replace(/\./g, "")
-      .replace(",", ".")
-  );
-  var sva = parseFloat(
-    document.getElementById("svaPRC").value.replace(/\./g, "").replace(",", ".")
-  );
-  var IR = document.getElementById("IRPRC").value;
-  var PCC = document.getElementById("PCCPRC").value;
+  function calcularPRI() {
+    const dt30 = new Date("December 31, 2021");
+    const dt40 = new Date("February 28, 2023");
 
-  var dtfin = new Date(
-    dtcanc.getTime() + 30 * (1000 * 60 * 60 * 24) + 3 * (1000 * 60 * 60)
-  );
-  var dtaux = new Date(
-    dtvenc.getTime() - 31 * (1000 * 60 * 60 * 24) + 3 * (1000 * 60 * 60)
-  );
-  var dtv2 = new Date(dtvenc.getTime() + 3 * (1000 * 60 * 60));
-  var qtdias = Math.ceil(Math.abs(dtfin - dtaux) / (1000 * 60 * 60 * 24));
-  var VlISS = (ISS / 100) * ((mens / 30) * qtdias);
-  var VlIR = IR * 0.01 * ((mens / 30) * qtdias);
-  var VlPCC = PCC * 0.0465 * ((mens / 30) * qtdias);
-  var VlPag = (mens / 30) * qtdias - VlISS - VlIR - VlPCC + sva;
-  var VlRee = mens - (VlPag - sva);
+    var dtini = new Date(document.getElementById("dtiniPRI").value);
+    var dtvenc = new Date(document.getElementById("dtvencPRI").value);
+    var ISS = parseFloat(
+      document.getElementById("ISSPRI").value.replace(",", ".")
+    );
+    var mens = parseFloat(
+      document
+        .getElementById("mensPRI")
+        .value.replace(/\./g, "")
+        .replace(",", ".")
+    );
+    var IR = document.getElementById("IRPRI").value;
+    var PCC = document.getElementById("PCCPRI").value;
+    var Fin = document.getElementById("FinPRI").value;
 
-  document.getElementById("qtdiasPRC").value = qtdias;
-  document.getElementById("dtfinPRC").value = dtfin
-    .toLocaleString()
-    .split(",")[0];
-  VlISS = VlISS.toFixed(2).replace(".", ",");
-  document.getElementById("VlISSPRC").value = VlISS.toString().replace(
-    /\B(?=(\d{3})+(?!\d))/g,
-    "."
-  );
-  VlIR = VlIR.toFixed(2).replace(".", ",");
-  document.getElementById("VlIRPRC").value = VlIR.toString().replace(
-    /\B(?=(\d{3})+(?!\d))/g,
-    "."
-  );
-  VlPCC = VlPCC.toFixed(2).replace(".", ",");
-  document.getElementById("VlPCCPRC").value = VlPCC.toString().replace(
-    /\B(?=(\d{3})+(?!\d))/g,
-    "."
-  );
-  if (qtdias > 30) {
-    document.getElementById("VlPagPRC").value = "TÍTULO INTEGRAL";
-    document.getElementById("VlReePRC").value = "TÍTULO INTEGRAL";
-    document.getElementById("txtPRC").innerHTML =
-      "<td>Por favor, enviar dados para DI no valor do TÍTULO INTEGRAL referente ao pró-rata de cancelamento, que foi do dia " +
-      dtfin.toLocaleString().split(",")[0] +
-      " até " +
-      dtv2.toLocaleString().split(",")[0] +
-      " no e-mail:</td>";
-    document.getElementById("txtReePRC").innerHTML =
-      "<td>Por favor, enviar dados para DI no valor do TÍTULO INTEGRAL referente ao pró-rata de cancelamento, que foi do dia " +
-      dtfin.toLocaleString().split(",")[0] +
-      " até " +
-      dtv2.toLocaleString().split(",")[0] +
-      " no e-mail:</td>";
-  } else {
+    var qtdias = Math.ceil(Math.abs(dtvenc - dtini) / (1000 * 60 * 60 * 24));
+    var VlISS = (ISS / 100) * ((mens / 30) * qtdias);
+    var VlIR = IR * 0.01 * ((mens / 30) * qtdias);
+    var VlPCC = PCC * 0.0465 * ((mens / 30) * qtdias);
+    var VlFin = 0;
+    if (dtini <= dt30) {
+      VlFin = Fin * 30;
+    } else if (dtini <= dt40) {
+      VlFin = Fin * 40;
+    } else {
+      VlFin = Fin * 50;
+    }
+    var VlPag = (mens / 30) * qtdias - VlISS - VlIR - VlPCC + VlFin;
+
+    document.getElementById("qtdiasPRI").value = qtdias;
+    VlISS = VlISS.toFixed(2).replace(".", ",");
+    document.getElementById("VlISSPRI").value = VlISS.toString().replace(
+      /\B(?=(\d{3})+(?!\d))/g,
+      "."
+    );
+    VlIR = VlIR.toFixed(2).replace(".", ",");
+    document.getElementById("VlIRPRI").value = VlIR.toString().replace(
+      /\B(?=(\d{3})+(?!\d))/g,
+      "."
+    );
+    VlPCC = VlPCC.toFixed(2).replace(".", ",");
+    document.getElementById("VlPCCPRI").value = VlPCC.toString().replace(
+      /\B(?=(\d{3})+(?!\d))/g,
+
+      "."
+    );
+    VlFin = VlFin.toFixed(2).replace(".", ",");
+    document.getElementById("VlFinPRI").value = VlFin.toString().replace(
+      /\B(?=(\d{3})+(?!\d))/g,
+      "."
+    );
     VlPag = VlPag.toFixed(2).replace(".", ",");
-    VlRee = VlRee.toFixed(2).replace(".", ",");
-    document.getElementById("VlPagPRC").value = VlPag.toString().replace(
+    document.getElementById("VlPagPRI").value = VlPag.toString().replace(
       /\B(?=(\d{3})+(?!\d))/g,
       "."
     );
-    document.getElementById("VlReePRC").value = VlRee.toString().replace(
+  }
+
+  function calcularPRC() {
+    if (!validarCamposPorTipoPessoa()) {
+      return;
+    }
+
+    var dtcanc = new Date(document.getElementById("dtcancPRC").value);
+    var dtvenc = new Date(document.getElementById("dtvencPRC").value);
+    var ISS = parseFloat(
+      document.getElementById("ISSPRC").value.replace("%", "").replace(",", ".")
+    );
+    var mens = parseFloat(
+      document
+        .getElementById("mensPRC")
+        .value.replace("R$ ", "")
+        .replace(/\./g, "")
+        .replace(",", ".")
+    );
+    var sva = parseFloat(
+      document
+        .getElementById("svaPRC")
+        .value.replace("R$ ", "")
+        .replace(/\./g, "")
+        .replace(",", ".")
+    );
+    var IR = document.getElementById("IRPRC").value;
+    var PCC = document.getElementById("PCCPRC").value;
+
+    var dtfin = new Date(
+      dtcanc.getTime() + 30 * (1000 * 60 * 60 * 24) + 3 * (1000 * 60 * 60)
+    );
+    var dtaux = new Date(
+      dtvenc.getTime() - 31 * (1000 * 60 * 60 * 24) + 3 * (1000 * 60 * 60)
+    );
+    var dtv2 = new Date(dtvenc.getTime() + 3 * (1000 * 60 * 60));
+    var qtdias = Math.ceil(Math.abs(dtfin - dtaux) / (1000 * 60 * 60 * 24));
+    var VlISS = (ISS / 100) * ((mens / 30) * qtdias);
+    var VlIR = IR * 0.01 * ((mens / 30) * qtdias);
+    var VlPCC = PCC * 0.0465 * ((mens / 30) * qtdias);
+    var VlPag = (mens / 30) * qtdias - VlISS - VlIR - VlPCC + sva;
+    var VlRee = mens - (VlPag - sva);
+
+    document.getElementById("qtdiasPRC").value = qtdias;
+    document.getElementById("dtfinPRC").value = dtfin
+      .toLocaleString()
+      .split(",")[0];
+    VlISS = VlISS.toFixed(2).replace(".", ",");
+    document.getElementById("VlISSPRC").value = VlISS.toString().replace(
       /\B(?=(\d{3})+(?!\d))/g,
       "."
     );
-    document.getElementById("txtPRC").innerHTML =
-      "<td>Por favor, enviar dados para DI no valor de R$ " +
-      VlPag.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") +
-      " referente ao pró-rata de cancelamento, que foi do dia " +
-      dtfin.toLocaleString().split(",")[0] +
-      " até " +
-      dtv2.toLocaleString().split(",")[0] +
-      " no e-mail:</td>";
-    document.getElementById("txtReePRC").innerHTML =
-      "<td>Por favor, enviar dados para reembolso no valor de R$ " +
-      VlRee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") +
-      " referente a pró-rata de cancelamento cobrada a mais, dados bancários para reembolso: ";
-  }
-}
-
-function calcularNM() {
-  const dt30 = new Date("December 31, 2021");
-  const dt40 = new Date("February 28, 2023");
-
-  var dtini = new Date(document.getElementById("dtiniNM").value);
-  var star = document.getElementById("starNM").value;
-  var mens = parseFloat(
-    document.getElementById("mensNM").value.replace(/\./g, "").replace(",", ".")
-  );
-  var Fin = document.getElementById("FinNM").value;
-  var porc;
-
-  switch (star) {
-    case "1":
-      document.getElementById("descNM").value = "0%";
-      porc = 0;
-      break;
-    case "2":
-      document.getElementById("descNM").value = "10%";
-      porc = 0.1;
-      break;
-    case "3":
-      document.getElementById("descNM").value = "15%";
-      porc = 0.15;
-      break;
-    case "4":
-      document.getElementById("descNM").value = "20%";
-      porc = 0.2;
-      break;
-    case "5":
-      document.getElementById("descNM").value = "20%";
-      porc = 0.2;
-  }
-
-  var VlFin = 0;
-  if (dtini <= dt30) {
-    VlFin = Fin * 30;
-  } else if (dtini <= dt40) {
-    VlFin = Fin * 40;
-  } else {
-    VlFin = Fin * 50;
-  }
-
-  var VldescmesNM = mens * porc;
-  var VldescNM = 3 * VldescmesNM;
-  var VlpagNM = mens - VldescmesNM + VlFin;
-
-  VldescmesNM = VldescmesNM.toFixed(2).replace(".", ",");
-  document.getElementById("VldescmesNM").value = VldescmesNM.toString().replace(
-    /\B(?=(\d{3})+(?!\d))/g,
-    "."
-  );
-  VldescNM = VldescNM.toFixed(2).replace(".", ",");
-  document.getElementById("VldescNM").value = VldescNM.toString().replace(
-    /\B(?=(\d{3})+(?!\d))/g,
-    "."
-  );
-  VlFin = VlFin.toFixed(2).replace(".", ",");
-  document.getElementById("VlFinNM").value = VlFin.toString().replace(
-    /\B(?=(\d{3})+(?!\d))/g,
-    "."
-  );
-  VlpagNM = VlpagNM.toFixed(2).replace(".", ",");
-  document.getElementById("VlPagNM").value = VlpagNM.toString().replace(
-    /\B(?=(\d{3})+(?!\d))/g,
-    "."
-  );
-  document.getElementById("txtNM").innerHTML =
-    "<td>Favor aplicar o desconto de " +
-    document.getElementById("descNM").value +
-    " na mensalidade durante 3 meses. Total de desconto: R$ " +
-    document.getElementById("VldescNM").value +
-    " diluído em 3x de R$ " +
-    document.getElementById("VldescmesNM").value +
-    "</td>";
-}
-
-function copyTextById(elementId) {
-  // Obtém o texto do elemento com base no id passado
-  var text = document.getElementById(elementId).innerHTML;
-
-  // Remove as tags <td> e </td>
-  text = text.replace(/<td>/g, "").replace(/<\/td>/g, "");
-
-  // Copia o texto para a área de transferência
-  navigator.clipboard.writeText(text);
-
-  // Mostra a notificação
-  mostrarNotificacao("TEXTO COPIADO");
-}
-
-function copyValorResultadoPRCById(inputId) {
-  // Obtém o valor do input com base no id passado
-  var valor = parseFloat(
-    document.getElementById(inputId).value.replace(/\./g, "").replace(",", ".")
-  );
-
-  // Formata o valor
-  var valorFormatado = valor.toFixed(2);
-  valorFormatado = valorFormatado
-    .replace(".", ",")
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
-  // Copia o valor formatado para a área de transferência
-  navigator.clipboard.writeText(valorFormatado);
-
-  // Mostra a notificação
-  mostrarNotificacao("VALOR COPIADO");
-
-  // Exibe o valor formatado no console
-  console.log(valorFormatado);
-}
-
-function limparCampos(dados, textos) {
-  // Limpa os valores dos campos de entrada
-  Object.keys(dados).forEach((id) => {
-    const elemento = document.getElementById(id);
-    if (elemento) {
-      elemento.value = dados[id];
+    VlIR = VlIR.toFixed(2).replace(".", ",");
+    document.getElementById("VlIRPRC").value = VlIR.toString().replace(
+      /\B(?=(\d{3})+(?!\d))/g,
+      "."
+    );
+    VlPCC = VlPCC.toFixed(2).replace(".", ",");
+    document.getElementById("VlPCCPRC").value = VlPCC.toString().replace(
+      /\B(?=(\d{3})+(?!\d))/g,
+      "."
+    );
+    if (qtdias > 30) {
+      document.getElementById("VlPagPRC").value = "TÍTULO INTEGRAL";
+      document.getElementById("VlReePRC").value = "TÍTULO INTEGRAL";
+      document.getElementById("txtPRC").innerHTML =
+        "<td class='w3-padding-small w3-round-small'>Por favor, enviar dados para DI no valor do TÍTULO INTEGRAL referente ao pró-rata de cancelamento, que foi do dia " +
+        dtfin.toLocaleString().split(",")[0] +
+        " até " +
+        dtv2.toLocaleString().split(",")[0] +
+        " no e-mail:</td>";
+      document.getElementById("txtReePRC").innerHTML =
+        "<td class='w3-padding-small w3-round-small'>Por favor, enviar dados para DI no valor do TÍTULO INTEGRAL referente ao pró-rata de cancelamento, que foi do dia " +
+        dtfin.toLocaleString().split(",")[0] +
+        " até " +
+        dtv2.toLocaleString().split(",")[0] +
+        " no e-mail:</td>";
+    } else {
+      VlPag = VlPag.toFixed(2).replace(".", ",");
+      VlRee = VlRee.toFixed(2).replace(".", ",");
+      document.getElementById("VlPagPRC").value = VlPag.toString().replace(
+        /\B(?=(\d{3})+(?!\d))/g,
+        "."
+      );
+      document.getElementById("VlReePRC").value = VlRee.toString().replace(
+        /\B(?=(\d{3})+(?!\d))/g,
+        "."
+      );
+      document.getElementById("txtPRC").innerHTML =
+        "<td class='w3-padding-small w3-round-small'>Por favor, enviar dados para DI no valor de R$ " +
+        VlPag.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") +
+        " referente ao pró-rata de cancelamento, que foi do dia " +
+        dtfin.toLocaleString().split(",")[0] +
+        " até " +
+        dtv2.toLocaleString().split(",")[0] +
+        " no e-mail:</td>";
+      document.getElementById("txtReePRC").innerHTML =
+        "<td class='w3-padding-small w3-round-small'>Por favor, enviar dados para reembolso no valor de R$ " +
+        VlRee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") +
+        " referente a pró-rata de cancelamento cobrada a mais, dados bancários para reembolso: ";
     }
-  });
+  }
 
-  // Atualiza o texto dos elementos
-  Object.keys(textos).forEach((id) => {
-    const elemento = document.getElementById(id);
-    if (elemento) {
-      elemento.innerHTML = textos[id];
+  function calcularNM() {
+    const dt30 = new Date("December 31, 2021");
+    const dt40 = new Date("February 28, 2023");
+
+    var dtini = new Date(document.getElementById("dtiniNM").value);
+    var star = document.getElementById("starNM").value;
+    var mens = parseFloat(
+      document.getElementById("mensNM").value.replace(/\./g, "").replace(",", ".")
+    );
+    var Fin = document.getElementById("FinNM").value;
+    var porc;
+
+    switch (star) {
+      case "1":
+        document.getElementById("descNM").value = "0%";
+        porc = 0;
+        break;
+      case "2":
+        document.getElementById("descNM").value = "10%";
+        porc = 0.1;
+        break;
+      case "3":
+        document.getElementById("descNM").value = "15%";
+        porc = 0.15;
+        break;
+      case "4":
+        document.getElementById("descNM").value = "20%";
+        porc = 0.2;
+        break;
+      case "5":
+        document.getElementById("descNM").value = "20%";
+        porc = 0.2;
     }
-  });
 
-  // Mostra a notificação
-  mostrarNotificacao("DADOS EXCLUÍDOS", 3000, "w3-red", "fa fa-trash-o");
-}
+    var VlFin = 0;
+    if (dtini <= dt30) {
+      VlFin = Fin * 30;
+    } else if (dtini <= dt40) {
+      VlFin = Fin * 40;
+    } else {
+      VlFin = Fin * 50;
+    }
 
-function limparCamposPRC() {
-  const dadosPRC = {
-    mensPRC: "0,00",
-    dtcancPRC: "",
-    dtvencPRC: "",
-    ISSPRC: "0",
-    IRPRC: "",
-    PCCPRC: "",
-    svaPRC: "0,00",
-    qtdiasPRC: "",
-    dtfinPRC: "",
-    VlISSPRC: "",
-    VlIRPRC: "",
-    VlPCCPRC: "",
-    VlPagPRC: "",
-    VlReePRC: "",
-    mensPAGA: "",
-    JoinvillePRC: "",
-  };
+    var VldescmesNM = mens * porc;
+    var VldescNM = 3 * VldescmesNM;
+    var VlpagNM = mens - VldescmesNM + VlFin;
 
-  const textosPRC = {
-    txtPRC:
-      "Por favor, enviar dados para DI no valor de R$ xxx,xx referente ao pró-rata de cancelamento, que foi do dia xx/xx/xxxx até yy/yy/yyyy no e-mail:",
-    txtReePRC:
-      "Por favor, enviar dados para reembolso no valor de R$ xxx,xx referente a pró-rata de cancelamento cobrada a mais, dados bancários para reembolso:",
-  };
+    VldescmesNM = VldescmesNM.toFixed(2).replace(".", ",");
+    document.getElementById("VldescmesNM").value = VldescmesNM.toString().replace(
+      /\B(?=(\d{3})+(?!\d))/g,
+      "."
+    );
+    VldescNM = VldescNM.toFixed(2).replace(".", ",");
+    document.getElementById("VldescNM").value = VldescNM.toString().replace(
+      /\B(?=(\d{3})+(?!\d))/g,
+      "."
+    );
+    VlFin = VlFin.toFixed(2).replace(".", ",");
+    document.getElementById("VlFinNM").value = VlFin.toString().replace(
+      /\B(?=(\d{3})+(?!\d))/g,
+      "."
+    );
+    VlpagNM = VlpagNM.toFixed(2).replace(".", ",");
+    document.getElementById("VlPagNM").value = VlpagNM.toString().replace(
+      /\B(?=(\d{3})+(?!\d))/g,
+      "."
+    );
+    document.getElementById("txtNM").innerHTML =
+      "<td>Favor aplicar o desconto de " +
+      document.getElementById("descNM").value +
+      " na mensalidade durante 3 meses. Total de desconto: R$ " +
+      document.getElementById("VldescNM").value +
+      " diluído em 3x de R$ " +
+      document.getElementById("VldescmesNM").value +
+      "</td>";
+  }
 
-  limparCampos(dadosPRC, textosPRC);
-  mensalidadePaga();
-}
+  function copyTextById(elementId) {
+    var text = document.getElementById(elementId).innerHTML;
+    text = text.replace(/<td>/g, "").replace(/<\/td>/g, "");
+    navigator.clipboard.writeText(text);
+    mostrarNotificacao("TEXTO COPIADO");
+  }
 
-function limparCamposNM() {
-  const dadosNM = {
-    mensNM: "0,00",
-    starNM: "1",
-    dtiniNM: "",
-    FinNM: "0",
-  };
+  function copyValorResultadoPRCById(inputId) {
+    var valor = parseFloat(
+      document.getElementById(inputId).value.replace(/\./g, "").replace(",", ".")
+    );
 
-  const textosNM = {
-    txtNM:
-      "Favor aplicar o desconto de x,xx% na mensalidade durante 3 meses. Total de desconto: R$ xx,xx diluído em 3x de R$ xx,xx",
-  };
+    var valorFormatado = valor.toFixed(2);
+    valorFormatado = valorFormatado
+      .replace(".", ",")
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
-  limparCampos(dadosNM, textosNM);
-}
+    navigator.clipboard.writeText(valorFormatado);
 
-function mostrarNotificacao(
-  message,
-  duration = 3000,
-  colorClass = "w3-green",
-  iconClass = "fa-check"
-) {
-  document.getElementById("notification").style.display = "table-row";
-  var notificationText = document.getElementById("notification-text");
-  notificationText.textContent = message;
+    mostrarNotificacao("VALOR COPIADO");
+  }
 
-  var notification = document.getElementById("notification");
-  var notificationIcon = notification.querySelector("i");
+  function limparCampos(dados, textos) {
+    Object.keys(dados).forEach((id) => {
+      const elemento = document.getElementById(id);
+      if (elemento) {
+        elemento.value = dados[id];
+      }
+    });
 
-  notification.classList.remove("w3-green", "w3-red", "w3-yellow", "w3-blue");
+    Object.keys(textos).forEach((id) => {
+      const elemento = document.getElementById(id);
+      if (elemento) {
+        elemento.innerHTML = textos[id];
+      }
+    });
 
-  notification.classList.add(colorClass);
+    mostrarNotificacao("DADOS EXCLUÍDOS", 3000, "w3-red", "fa fa-trash-o");
+  }
 
-  notificationIcon.className = `fa ${iconClass}`;
+  function limparCamposPRC() {
+    const dadosPRC = {
+      mensPRC: "R$ 0,00",
+      dtcancPRC: "",
+      dtvencPRC: "",
+      ISSPRC: "0%",
+      IRPRC: "",
+      PCCPRC: "",
+      svaPRC: "R$ 0,00",
+      qtdiasPRC: "",
+      dtfinPRC: "",
+      VlISSPRC: "",
+      VlIRPRC: "",
+      VlPCCPRC: "",
+      VlPagPRC: "",
+      VlReePRC: "",
+      mensPAGA: "",
+      JoinvillePRC: "",
+    };
 
-  notification.style.display = "block";
-  notification.style.opacity = 1;
-  notification.style.transform = "translateY(0)";
+    const textosPRC = {
+      txtPRC:
+        "<td class='w3-padding-small w3-round-small'>Por favor, enviar dados para DI no valor de R$ xxx,xx referente ao pró-rata de cancelamento, que foi do dia xx/xx/xxxx até yy/yy/yyyy no e-mail:</td>",
+      txtReePRC:
+        "<td class='w3-padding-small w3-round-small'>Por favor, enviar dados para reembolso no valor de R$ xxx,xx referente a pró-rata de cancelamento cobrada a mais, dados bancários para reembolso:</td>",
+    };
 
-  setTimeout(function () {
-    notification.style.opacity = 0;
-    notification.style.transform = "translateY(-20px)";
+    limparCampos(dadosPRC, textosPRC);
+    mensalidadePaga();
+    visibilidadeJoinville();
+  }
+
+  function limparCamposNM() {
+    const dadosNM = {
+      mensNM: "0,00",
+      starNM: "1",
+      dtiniNM: "",
+      FinNM: "0",
+    };
+
+    const textosNM = {
+      txtNM:
+        "Favor aplicar o desconto de x,xx% na mensalidade durante 3 meses. Total de desconto: R$ xx,xx diluído em 3x de R$ xx,xx",
+    };
+
+    limparCampos(dadosNM, textosNM);
+  }
+
+  function mostrarNotificacao(
+    message,
+    duration = 3000,
+    colorClass = "w3-green",
+    iconClass = "fa-check"
+  ) {
+    document.getElementById("notification").style.display = "table-row";
+    var notificationText = document.getElementById("notification-text");
+    notificationText.textContent = message;
+
+    var notification = document.getElementById("notification");
+    var notificationIcon = notification.querySelector("i");
+
+    notification.classList.remove("w3-green", "w3-red", "w3-yellow", "w3-blue");
+
+    notification.classList.add(colorClass);
+
+    notificationIcon.className = `fa ${iconClass}`;
+
+    notification.style.display = "block";
+    notification.style.opacity = 1;
+    notification.style.transform = "translateY(0)";
 
     setTimeout(function () {
-      notification.style.display = "none";
-    }, 500);
-  }, duration);
-}
+      notification.style.opacity = 0;
+      notification.style.transform = "translateY(-20px)";
 
-function formatarValorCampo(campo) {
-  var valor = campo.value.replace(/\D/g, "");
-  valor = (valor / 100).toFixed(2).replace(".", ",");
-  campo.value = valor.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-}
-
-function atualizarVisibilidadeCampos() {
-  // Obtém o valor do botão de rádio selecionado
-  var selectedValue = document.querySelector(
-    'input[name="contrato"]:checked'
-  ).value;
-
-  // IDs dos elementos que devem ser mostrados ou ocultados
-  var ids = [
-    "VISSPRC",
-    "VIRPRC",
-    "VPCCPRC",
-    "VRISSPRC",
-    "VRIRPRC",
-    "VRPCCPRC",
-    "VJoinvillePRC",
-  ];
-
-  // Define a visibilidade dos elementos com base na seleção
-  ids.forEach(function (id) {
-    document.getElementById(id).style.display =
-      selectedValue === "juridica" ? "table-row" : "none";
-  });
-
-  limparCamposPRC();
-  document.getElementById("notification").style.display = "none";
-}
-
-function mensalidadePaga() {
-  const valorSelecionado = document.getElementById("mensPAGA").value;
-  const debitoIdentificado = document.getElementById("TRVlPagPRC");
-  const reembolso = document.getElementById("TRVlReePRC");
-  const resultado = document.getElementById("Resultado");
-  const blocoDI = document.getElementById("blocoEnvioDI");
-  const blocoReembolso = document.getElementById("blocoReembolso");
-  // const resultadoDebitoIdentificado = document.getElementsByClassName("resultadoDebitoIdentificado");
-
-  // Verifica se nenhuma opção foi selecionada
-  if (valorSelecionado === "") {
-    debitoIdentificado.classList.add("w3-hide");
-    reembolso.classList.add("w3-hide");
-    resultado.classList.remove("w3-hide");
-    blocoDI.classList.add("w3-hide");
-    blocoReembolso.classList.add("w3-hide");
-    // resultadoDebitoIdentificado.classList.add("w3-hide");
-  } else {
-    resultado.classList.add("w3-hide");
-    valorSelecionado === "0"
-      ? (debitoIdentificado.classList.remove("w3-hide"),
-        reembolso.classList.add("w3-hide"),
-        blocoDI.classList.remove("w3-hide"),
-        blocoReembolso.classList.add("w3-hide"))
-      : (debitoIdentificado.classList.add("w3-hide"),
-        reembolso.classList.remove("w3-hide"),
-        blocoDI.classList.add("w3-hide"),
-        blocoReembolso.classList.remove("w3-hide"));
+      setTimeout(function () {
+        notification.style.display = "none";
+      }, 500);
+    }, duration);
   }
-}
 
-function validarCampos(ids) {
-  for (let id of ids) {
-    const elemento = document.getElementById(id);
-    // Verifica se o elemento existe e se é um <select> ou um <input> com o valor padrão vazio
-    if (elemento && (elemento.value === "" || elemento.value === "0,00")) {
-      console.log(`O campo com ID ${id} está vazio. Preencha todos os campos.`);
-      return false;
+  function formatarValorCampo(campo) {
+    var valor = campo.value.replace(/\D/g, "");
+    valor = (valor / 100).toFixed(2).replace(".", ",");
+    campo.value = "R$ " + valor.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+
+  function formatarPercentualCampo(campo) {
+    var valor = campo.value.replace(/[^0-9,]/g, "");
+    valor = valor.replace(/,+/g, ",");
+    campo.value = valor + "%";
+  }
+
+  function atualizarVisibilidadeCampos() {
+    var selectedValue = document.querySelector(
+      'input[name="contrato"]:checked'
+    ).value;
+
+    var ids = [
+      "VISSPRC",
+      "VIRPRC",
+      "VPCCPRC",
+      "VRISSPRC",
+      "VRIRPRC",
+      "VRPCCPRC",
+      "VJoinvillePRC",
+    ];
+
+    ids.forEach(function (id) {
+      document.getElementById(id).style.display =
+        selectedValue === "juridica" ? "table-row" : "none";
+    });
+
+    limparCamposPRC();
+    document.getElementById("notification").style.display = "none";
+  }
+
+  function mensalidadePaga() {
+    const valorSelecionado = document.getElementById("mensPAGA").value;
+    const debitoIdentificado = document.getElementById("TRVlPagPRC");
+    const reembolso = document.getElementById("TRVlReePRC");
+    const resultado = document.getElementById("Resultado");
+    const blocoDI = document.getElementById("blocoEnvioDI");
+    const blocoReembolso = document.getElementById("blocoReembolso");
+
+    if (valorSelecionado === "") {
+      debitoIdentificado.classList.add("w3-hide");
+      reembolso.classList.add("w3-hide");
+      resultado.classList.remove("w3-hide");
+      blocoDI.classList.add("w3-hide");
+      blocoReembolso.classList.add("w3-hide");
+    } else {
+      resultado.classList.add("w3-hide");
+      valorSelecionado === "0"
+        ? (debitoIdentificado.classList.remove("w3-hide"),
+          reembolso.classList.add("w3-hide"),
+          blocoDI.classList.remove("w3-hide"),
+          blocoReembolso.classList.add("w3-hide"))
+        : (debitoIdentificado.classList.add("w3-hide"),
+          reembolso.classList.remove("w3-hide"),
+          blocoDI.classList.add("w3-hide"),
+          blocoReembolso.classList.remove("w3-hide"));
     }
   }
-  return true;
-}
 
-function validarCamposPorTipoPessoa() {
-  const tipoPessoa = document.querySelector(
-    'input[name="contrato"]:checked'
-  ).value;
-  const joinville = document.getElementById("JoinvillePRC").value;
+  function visibilidadeJoinville() {
+    const tipoPessoa = document.querySelector(
+      'input[name="contrato"]:checked'
+    ).value;
 
-  let camposParaValidar = [];
+    const visibilidadeISS = document.getElementById("VISSPRC");
+    const visibilidadeIR = document.getElementById("VIRPRC");
+    const visibilidadePCC = document.getElementById("VPCCPRC");
 
-  if (tipoPessoa === "fisica") {
-    // IDs dos campos para Pessoa Física
-    camposParaValidar = ["mensPAGA", "mensPRC", "dtcancPRC", "dtvencPRC"];
-  } else if (tipoPessoa === "juridica") {
-    // IDs dos campos para Pessoa Jurídica
-    camposParaValidar = ["mensPAGA", "mensPRC", "dtcancPRC", "dtvencPRC"];
+    if (tipoPessoa === "juridica") {
+      visibilidadeISS.classList.remove("w3-hide");
+      visibilidadeIR.classList.remove("w3-hide");
+      visibilidadePCC.classList.remove("w3-hide");
+    }
+  }
+
+  function controlarVisibilidadeCampos() {
+    const tipoPessoa = document.querySelector(
+      'input[name="contrato"]:checked'
+    ).value;
+    const joinville = document.getElementById("JoinvillePRC").value;
 
     const idsCampos = ["VISSPRC", "VIRPRC", "VPCCPRC"];
 
-    if (joinville === "0") {
-      // Adicionar classes e validar campos
-      idsCampos.forEach((id) => {
-        document.getElementById(id).classList.remove("w3-hide");
-        camposParaValidar.push(id);
-      });
-    } else if (joinville === "1") {
-      // Ocultar campos e limpar valores
-      idsCampos.forEach((id) => {
-        document.getElementById(id).classList.add("w3-hide");
-        document.getElementById(id.replace("V", "")).value =
-          id === "VISSPRC" ? "0" : "";
-      });
-    } else {
-      console.log("indique se a nota é de Joinville!");
+    if (tipoPessoa === "juridica") {
+      if (joinville === "0") {
+        idsCampos.forEach((id) => {
+          document.getElementById(id).classList.remove("w3-hide");
+        });
+      } else if (joinville === "1") {
+        idsCampos.forEach((id) => {
+          document.getElementById(id).classList.add("w3-hide");
+          document.getElementById(id.replace("V", "")).value =
+            id === "VISSPRC" ? "0" : "";
+        });
+      }
     }
   }
 
-  // Valida os campos necessários
-  if (!validarCampos(camposParaValidar)) {
-    console.log("Preencha todos os campos");
-    return false; // Interrompe o cálculo se a validação falhar
+  function obterCamposPorTipoPessoa(tipoPessoa, joinville) {
+    let camposParaValidar = [];
+
+    if (tipoPessoa === "fisica") {
+      camposParaValidar = ["mensPAGA", "mensPRC", "dtcancPRC", "dtvencPRC"];
+    } else if (tipoPessoa === "juridica") {
+      camposParaValidar = [
+        "mensPAGA",
+        "mensPRC",
+        "JoinvillePRC",
+        "dtcancPRC",
+        "dtvencPRC",
+      ];
+
+      if (joinville === "0") {
+        camposParaValidar.push("ISSPRC", "IRPRC", "PCCPRC");
+      }
+    }
+
+    return camposParaValidar;
   }
 
-  return true; // Continua se todos os campos estiverem preenchidos
-}
+  const nomesCampos = {
+    mensPAGA:
+      "A mensalidade a ser calculada foi paga? <i class='fa fa-close' style='color:red'></i>",
+    mensPRC: "Valor da mensalidade <i class='fa fa-close' style='color:red'></i>",
+    JoinvillePRC:
+      "A nota é de Joinville? <i class='fa fa-close' style='color:red'></i>",
+    dtcancPRC:
+      "Data de solicitação de cancelamento <i class='fa fa-close' style='color:red'></i>",
+    dtvencPRC:
+      "Data de vencimento do título <i class='fa fa-close' style='color:red'></i>",
+    IRPRC: "Tem retenção de IR? <i class='fa fa-close' style='color:red'></i>",
+    PCCPRC: "Tem retenção de PCC? <i class='fa fa-close' style='color:red'></i>",
+  };
 
-// Adiciona um listener para os botões de rádio
-document.addEventListener("DOMContentLoaded", function () {
-  var radios = document.querySelectorAll('input[name="contrato"]');
-  radios.forEach(function (radio) {
-    radio.addEventListener("change", atualizarVisibilidadeCampos);
+  function validarCampos(ids) {
+    let camposVazios = [];
+
+    for (let id of ids) {
+      const elemento = document.getElementById(id);
+
+      if (elemento && (elemento.value === "" || elemento.value === "R$ 0,00")) {
+        const nomeCampo = nomesCampos[id] || id;
+        camposVazios.push(nomeCampo);
+      }
+    }
+
+    if (camposVazios.length > 0) {
+      const mensagem =
+        "<p><b>Os seguintes campos não foram preenchidos:</b><p>" +
+        camposVazios.join("<br>");
+      document.getElementById("mensagemCamposVazios").innerHTML = mensagem;
+      document.getElementById("modalCamposPreenchidos").style.display = "block";
+      return false;
+    }
+
+    return true;
+  }
+
+  function validarCamposPorTipoPessoa() {
+    const tipoPessoa = document.querySelector(
+      'input[name="contrato"]:checked'
+    ).value;
+    const joinville = document.getElementById("JoinvillePRC").value;
+
+    const camposParaValidar = obterCamposPorTipoPessoa(tipoPessoa, joinville);
+
+    if (!validarCampos(camposParaValidar)) {
+      document.getElementById("modalCamposPreenchidos").style.display = "block";
+      return false;
+    }
+
+    return true;
+  }
+
+  function fecharModal() {
+    document.getElementById("modalCamposPreenchidos").style.display = "none";
+  }
+
+  function fecharModal() {
+    document.getElementById("modalCamposPreenchidos").style.display = "none";
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var radios = document.querySelectorAll('input[name="contrato"]');
+    radios.forEach(function (radio) {
+      radio.addEventListener("change", atualizarVisibilidadeCampos);
+    });
+
+    atualizarVisibilidadeCampos();
   });
 
-  // Chama a função uma vez para definir o estado inicial
-  atualizarVisibilidadeCampos();
-});
+  /* Desenvolvido por Luis Roberto Cerqueira Campos e Vinícius Sousa Celestino*/
 
 </script>
+<!-- Desenvolvido por Luis Roberto Cerqueira Campos e Vinícius Sousa Celestino -->
 
 </html>
