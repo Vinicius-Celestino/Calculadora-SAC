@@ -76,7 +76,7 @@ function calcularPRI() {
 
 function calcularPRC() {
   if (!validarCamposPorTipoPessoa()) {
-    return; // Interrompe o cálculo se a validação falhar
+    return;
   }
 
   var dtcanc = new Date(document.getElementById("dtcancPRC").value);
@@ -253,40 +253,28 @@ function calcularNM() {
 }
 
 function copyTextById(elementId) {
-  // Obtém o texto do elemento com base no id passado
   var text = document.getElementById(elementId).innerHTML;
-
-  // Remove as tags <td> e </td>
   text = text.replace(/<td>/g, "").replace(/<\/td>/g, "");
-
-  // Copia o texto para a área de transferência
   navigator.clipboard.writeText(text);
-
-  // Mostra a notificação
   mostrarNotificacao("TEXTO COPIADO");
 }
 
 function copyValorResultadoPRCById(inputId) {
-  // Obtém o valor do input com base no id passado
   var valor = parseFloat(
     document.getElementById(inputId).value.replace(/\./g, "").replace(",", ".")
   );
 
-  // Formata o valor
   var valorFormatado = valor.toFixed(2);
   valorFormatado = valorFormatado
     .replace(".", ",")
     .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
-  // Copia o valor formatado para a área de transferência
   navigator.clipboard.writeText(valorFormatado);
 
-  // Mostra a notificação
   mostrarNotificacao("VALOR COPIADO");
 }
 
 function limparCampos(dados, textos) {
-  // Limpa os valores dos campos de entrada
   Object.keys(dados).forEach((id) => {
     const elemento = document.getElementById(id);
     if (elemento) {
@@ -294,7 +282,6 @@ function limparCampos(dados, textos) {
     }
   });
 
-  // Atualiza o texto dos elementos
   Object.keys(textos).forEach((id) => {
     const elemento = document.getElementById(id);
     if (elemento) {
@@ -302,7 +289,6 @@ function limparCampos(dados, textos) {
     }
   });
 
-  // Mostra a notificação
   mostrarNotificacao("DADOS EXCLUÍDOS", 3000, "w3-red", "fa fa-trash-o");
 }
 
@@ -400,12 +386,10 @@ function formatarPercentualCampo(campo) {
 }
 
 function atualizarVisibilidadeCampos() {
-  // Obtém o valor do botão de rádio selecionado
   var selectedValue = document.querySelector(
     'input[name="contrato"]:checked'
   ).value;
 
-  // IDs dos elementos que devem ser mostrados ou ocultados
   var ids = [
     "VISSPRC",
     "VIRPRC",
@@ -416,7 +400,6 @@ function atualizarVisibilidadeCampos() {
     "VJoinvillePRC",
   ];
 
-  // Define a visibilidade dos elementos com base na seleção
   ids.forEach(function (id) {
     document.getElementById(id).style.display =
       selectedValue === "juridica" ? "table-row" : "none";
@@ -433,16 +416,13 @@ function mensalidadePaga() {
   const resultado = document.getElementById("Resultado");
   const blocoDI = document.getElementById("blocoEnvioDI");
   const blocoReembolso = document.getElementById("blocoReembolso");
-  // const resultadoDebitoIdentificado = document.getElementsByClassName("resultadoDebitoIdentificado");
 
-  // Verifica se nenhuma opção foi selecionada
   if (valorSelecionado === "") {
     debitoIdentificado.classList.add("w3-hide");
     reembolso.classList.add("w3-hide");
     resultado.classList.remove("w3-hide");
     blocoDI.classList.add("w3-hide");
     blocoReembolso.classList.add("w3-hide");
-    // resultadoDebitoIdentificado.classList.add("w3-hide");
   } else {
     resultado.classList.add("w3-hide");
     valorSelecionado === "0"
@@ -457,20 +437,7 @@ function mensalidadePaga() {
   }
 }
 
-function validarCampos(ids) {
-  for (let id of ids) {
-    const elemento = document.getElementById(id);
-    // Verifica se o elemento existe e se é um <select> ou um <input> com o valor padrão vazio
-    if (elemento && (elemento.value === "" || elemento.value === "0,00")) {
-      console.log(`O campo com ID ${id} está vazio. Preencha todos os campos.`);
-      return false;
-    }
-  }
-  return true;
-}
-
 function visibilidadeJoinville() {
-  // Função reseta os campos ao limpar os dados se a nota for de Joinville
   const tipoPessoa = document.querySelector(
     'input[name="contrato"]:checked'
   ).value;
@@ -486,62 +453,120 @@ function visibilidadeJoinville() {
   }
 }
 
+function controlarVisibilidadeCampos() {
+  const tipoPessoa = document.querySelector(
+    'input[name="contrato"]:checked'
+  ).value;
+  const joinville = document.getElementById("JoinvillePRC").value;
+
+  const idsCampos = ["VISSPRC", "VIRPRC", "VPCCPRC"];
+
+  if (tipoPessoa === "juridica") {
+    if (joinville === "0") {
+      idsCampos.forEach((id) => {
+        document.getElementById(id).classList.remove("w3-hide");
+      });
+    } else if (joinville === "1") {
+      idsCampos.forEach((id) => {
+        document.getElementById(id).classList.add("w3-hide");
+        document.getElementById(id.replace("V", "")).value =
+          id === "VISSPRC" ? "0" : "";
+      });
+    }
+  }
+}
+
+function obterCamposPorTipoPessoa(tipoPessoa, joinville) {
+  let camposParaValidar = [];
+
+  if (tipoPessoa === "fisica") {
+    camposParaValidar = ["mensPAGA", "mensPRC", "dtcancPRC", "dtvencPRC"];
+  } else if (tipoPessoa === "juridica") {
+    camposParaValidar = [
+      "mensPAGA",
+      "mensPRC",
+      "JoinvillePRC",
+      "dtcancPRC",
+      "dtvencPRC",
+    ];
+
+    if (joinville === "0") {
+      camposParaValidar.push("ISSPRC", "IRPRC", "PCCPRC");
+    }
+  }
+
+  return camposParaValidar;
+}
+
+const nomesCampos = {
+  mensPAGA:
+    "A mensalidade a ser calculada foi paga? <i class='fa fa-close' style='color:red'></i>",
+  mensPRC: "Valor da mensalidade <i class='fa fa-close' style='color:red'></i>",
+  JoinvillePRC:
+    "A nota é de Joinville? <i class='fa fa-close' style='color:red'></i>",
+  dtcancPRC:
+    "Data de solicitação de cancelamento <i class='fa fa-close' style='color:red'></i>",
+  dtvencPRC:
+    "Data de vencimento do título <i class='fa fa-close' style='color:red'></i>",
+  IRPRC: "Tem retenção de IR? <i class='fa fa-close' style='color:red'></i>",
+  PCCPRC: "Tem retenção de PCC? <i class='fa fa-close' style='color:red'></i>",
+};
+
+function validarCampos(ids) {
+  let camposVazios = [];
+
+  for (let id of ids) {
+    const elemento = document.getElementById(id);
+
+    if (elemento && (elemento.value === "" || elemento.value === "R$ 0,00")) {
+      const nomeCampo = nomesCampos[id] || id;
+      camposVazios.push(nomeCampo);
+    }
+  }
+
+  if (camposVazios.length > 0) {
+    const mensagem =
+      "<p><b>Os seguintes campos não foram preenchidos:</b><p>" +
+      camposVazios.join("<br>");
+    document.getElementById("mensagemCamposVazios").innerHTML = mensagem;
+    document.getElementById("modalCamposPreenchidos").style.display = "block";
+    return false;
+  }
+
+  return true;
+}
+
 function validarCamposPorTipoPessoa() {
   const tipoPessoa = document.querySelector(
     'input[name="contrato"]:checked'
   ).value;
   const joinville = document.getElementById("JoinvillePRC").value;
 
-  let camposParaValidar = [];
+  const camposParaValidar = obterCamposPorTipoPessoa(tipoPessoa, joinville);
 
-  if (tipoPessoa === "fisica") {
-    // IDs dos campos para Pessoa Física
-    camposParaValidar = ["mensPAGA", "mensPRC", "dtcancPRC", "dtvencPRC"];
-  } else if (tipoPessoa === "juridica") {
-    // IDs dos campos para Pessoa Jurídica
-    camposParaValidar = ["mensPAGA", "mensPRC", "dtcancPRC", "dtvencPRC"];
-
-    const idsCampos = ["VISSPRC", "VIRPRC", "VPCCPRC"];
-
-    if (joinville === "0") {
-      // Adicionar classes e validar campos
-      idsCampos.forEach((id) => {
-        document.getElementById(id).classList.remove("w3-hide");
-        camposParaValidar.push(id);
-      });
-    } else if (joinville === "1") {
-      // Ocultar campos e limpar valores
-      idsCampos.forEach((id) => {
-        document.getElementById(id).classList.add("w3-hide");
-        document.getElementById(id.replace("V", "")).value =
-          id === "VISSPRC" ? "0" : "";
-      });
-    } else {
-      console.log("indique se a nota é de Joinville!");
-    }
-  }
-
-  // Valida os campos necessários
   if (!validarCampos(camposParaValidar)) {
-    console.log("Preencha todos os campos");
     document.getElementById("modalCamposPreenchidos").style.display = "block";
-    return false; // Interrompe o cálculo se a validação falhar
+    return false;
   }
-  return true; // Continua se todos os campos estiverem preenchidos
+
+  return true;
 }
 
 function fecharModal() {
-  document.getElementById('modalCamposPreenchidos').style.display = 'none';
+  document.getElementById("modalCamposPreenchidos").style.display = "none";
 }
 
+function fecharModal() {
+  document.getElementById("modalCamposPreenchidos").style.display = "none";
+}
 
-// Adiciona um listener para os botões de rádio
 document.addEventListener("DOMContentLoaded", function () {
   var radios = document.querySelectorAll('input[name="contrato"]');
   radios.forEach(function (radio) {
     radio.addEventListener("change", atualizarVisibilidadeCampos);
   });
 
-  // Chama a função uma vez para definir o estado inicial
   atualizarVisibilidadeCampos();
 });
+
+/* Desenvolvido por Luis Roberto Cerqueira Campos e Vinícius Sousa Celestino*/
