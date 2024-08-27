@@ -171,7 +171,7 @@ function calcularPRC() {
     document.getElementById("txtReePRC").innerHTML =
       "<td class='w3-padding-small w3-round-small'>Por favor, enviar dados para reembolso no valor de R$ " +
       VlRee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") +
-      " referente a pró-rata de cancelamento cobrada a mais, dados bancários para reembolso: ";
+      " referente a pró-rata de cancelamento cobrada a mais, dados bancários para reembolso: </td>";
   }
 }
 
@@ -182,7 +182,11 @@ function calcularNM() {
   var dtini = new Date(document.getElementById("dtiniNM").value);
   var star = document.getElementById("starNM").value;
   var mens = parseFloat(
-    document.getElementById("mensNM").value.replace(/\./g, "").replace(",", ".")
+    document
+      .getElementById("mensNM")
+      .value.replace("R$ ", "")
+      .replace(/\./g, "")
+      .replace(",", ".")
   );
   var Fin = document.getElementById("FinNM").value;
   var porc;
@@ -254,7 +258,11 @@ function calcularNM() {
 
 function copyTextById(elementId) {
   var text = document.getElementById(elementId).innerHTML;
-  text = text.replace(/<td>/g, "").replace(/<\/td>/g, "");
+  // text = text.replace(/<td>/g, "").replace(/<\/td>/g, "");
+  text = text
+    .replace(/<td>/g, "")
+    .replace(/<td class="w3-padding-small w3-round-small">/g, "")
+    .replace(/<\/td>/g, "");
   navigator.clipboard.writeText(text);
   mostrarNotificacao("TEXTO COPIADO");
 }
@@ -326,7 +334,7 @@ function limparCamposPRC() {
 
 function limparCamposNM() {
   const dadosNM = {
-    mensNM: "0,00",
+    mensNM: "R$ 0,00",
     starNM: "1",
     dtiniNM: "",
     FinNM: "0",
