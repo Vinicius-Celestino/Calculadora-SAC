@@ -36,17 +36,24 @@
 
 <body>
 
-    <div class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width:300px">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/7/76/Verisure_logo.svg" width="200"
-            style="margin-left:10px;margin-top:10px">
-        <h2 class="w3-bar-item">CALCULADORA SAC TESTE</h2>
-        <button class="w3-bar-item w3-button w3-ripple tablink" onclick="openCalc(event, 'PRI')">PRÓ-RATA DE
-            INÍCIO</button>
-        <button class="w3-bar-item w3-button w3-ripple tablink" onclick="openCalc(event, 'PRC')">PRÓ-RATA DE
-            CANCELAMENTO</button>
-        <button class="w3-bar-item w3-button w3-ripple tablink" onclick="openCalc(event, 'NM')">NEGOCIAR
-            MONITORIA</button>
+    <div class="w3-sidebar w3-bar-block w3-light-grey w3-card"
+        style="width:300px; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/76/Verisure_logo.svg" width="200"
+                style="margin-left:10px;margin-top:10px">
+            <h2 class="w3-bar-item">CALCULADORA SAC TESTE</h2>
+            <button class="w3-bar-item w3-button w3-ripple tablink" onclick="openCalc(event, 'PRI')">PRÓ-RATA DE
+                INÍCIO</button>
+            <button class="w3-bar-item w3-button w3-ripple tablink" onclick="openCalc(event, 'PRC')">PRÓ-RATA DE
+                CANCELAMENTO</button>
+            <button class="w3-bar-item w3-button w3-ripple tablink" onclick="openCalc(event, 'NM')">NEGOCIAR
+                MONITORIA</button>
+        </div>
+        <a href="https://forms.office.com/e/aibhYAaAMS" target="_blank"
+            class="w3-bar-item w3-text-indigo w3-margin-bottom" style="text-align:center;">Encontrou um problema?
+            <br>Avise aqui!</a>
     </div>
+
 
     <div id="notification" class="w3-panel w3-green w3-card-4 w3-center w3-round"
         style="display:none; opacity:0; position:fixed; top:5%; right:2%; width:200px; padding:10px; transition: opacity 0.5s ease, transform 0.5s ease; transform: translateY(-20px); text-shadow:1px 1px 0 #444">
