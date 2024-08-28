@@ -24,7 +24,8 @@ function calcularPRI() {
   var mens = parseFloat(
     document
       .getElementById("mensPRI")
-      .value.replace(/\./g, "")
+      .value.replace("R$ ", "")
+      .replace(/\./g, "")
       .replace(",", ".")
   );
   var IR = document.getElementById("IRPRI").value;
