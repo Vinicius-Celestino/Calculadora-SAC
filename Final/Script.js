@@ -565,10 +565,6 @@ function fecharModal() {
   document.getElementById("modalCamposPreenchidos").style.display = "none";
 }
 
-function fecharModal() {
-  document.getElementById("modalCamposPreenchidos").style.display = "none";
-}
-
 document.addEventListener("DOMContentLoaded", function () {
   var radios = document.querySelectorAll('input[name="contrato"]');
   radios.forEach(function (radio) {
