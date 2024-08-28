@@ -113,11 +113,8 @@ function calcularPRC() {
   var VlISS = (ISS / 100) * ((mens / 30) * qtdias);
   var VlIR = IR * 0.01 * ((mens / 30) * qtdias);
   var VlPCC = PCC * 0.0465 * ((mens / 30) * qtdias);
-  var VlPag = ((mens + sva) / 30) * qtdias - VlISS - VlIR - VlPCC;
-  var VlRee = (mens + sva) - VlPag ;
-
-  console.log("DI:" + VlPag);
-  console.log("Reembolso:" + VlRee);
+  var VlPag = (mens / 30) * qtdias - VlISS - VlIR - VlPCC + sva;
+  var VlRee = mens - (VlPag - sva);
 
   document.getElementById("qtdiasPRC").value = qtdias;
   document.getElementById("dtfinPRC").value = dtfin
@@ -511,17 +508,13 @@ function obterCamposPorTipoPessoa(tipoPessoa, joinville) {
 }
 
 const nomesCampos = {
-  mensPAGA:
-    "A mensalidade a ser calculada foi paga? <i class='fa fa-close' style='color:red'></i>",
-  mensPRC: "Valor da mensalidade <i class='fa fa-close' style='color:red'></i>",
-  JoinvillePRC:
-    "A nota é de Joinville? <i class='fa fa-close' style='color:red'></i>",
-  dtcancPRC:
-    "Data de solicitação de cancelamento <i class='fa fa-close' style='color:red'></i>",
-  dtvencPRC:
-    "Data de vencimento do título <i class='fa fa-close' style='color:red'></i>",
-  IRPRC: "Tem retenção de IR? <i class='fa fa-close' style='color:red'></i>",
-  PCCPRC: "Tem retenção de PCC? <i class='fa fa-close' style='color:red'></i>",
+  mensPAGA: "A mensalidade a ser calculada foi paga?",
+  mensPRC: "Valor da mensalidade",
+  JoinvillePRC: "A nota é de Joinville?",
+  dtcancPRC: "Data de solicitação de cancelamento",
+  dtvencPRC: "Data de vencimento do título",
+  IRPRC: "Tem retenção de IR?",
+  PCCPRC: "Tem retenção de PCC?",
 };
 
 function validarCampos(ids) {
@@ -532,13 +525,15 @@ function validarCampos(ids) {
 
     if (elemento && (elemento.value === "" || elemento.value === "R$ 0,00")) {
       const nomeCampo = nomesCampos[id] || id;
-      camposVazios.push(nomeCampo);
+      camposVazios.push(
+        nomeCampo + " <i class='fa fa-close' style='color:red'></i>"
+      );
     }
   }
 
   if (camposVazios.length > 0) {
     const mensagem =
-      "<p><b>Os seguintes campos não foram preenchidos:</b><p>" +
+      "<p><b>Os seguintes campos não foram preenchidos:</b></p>" +
       camposVazios.join("<br>");
     document.getElementById("mensagemCamposVazios").innerHTML = mensagem;
     document.getElementById("modalCamposPreenchidos").style.display = "block";
