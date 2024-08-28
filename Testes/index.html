@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html>
+<title>Calculadora SAC TESTE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="/Testes/Script.js"></script>
+
+<head>
+    <link rel="icon" type="image/png" href="/Imagens/icon.png" sizes="64x64">
+</head>
+
+<style>
+    html {
+        zoom: 80%;
+    }
+
+    .w3-radio {
+        display: none;
+    }
+
+    .w3-radio:checked+label {
+        background-color: #f44336;
+        color: white;
+    }
+
+    .w3-bar .w3-bar-item {
+        box-shadow: none !important;
+        border: 1px solid #ccc;
+    }
+
+    .w3-bar .w3-bar-item {
+        border: none;
+    }
+</style>
+
+<body>
+
+    <div class="w3-sidebar w3-bar-block w3-light-grey w3-card"
+        style="width:300px; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/76/Verisure_logo.svg" width="200"
+                style="margin-left:10px;margin-top:10px">
+            <h2 class="w3-bar-item">CALCULADORA SAC TESTE</h2>
+            <button class="w3-bar-item w3-button w3-ripple tablink" onclick="openCalc(event, 'PRI')">PRÓ-RATA DE
+                INÍCIO</button>
+            <button class="w3-bar-item w3-button w3-ripple tablink" onclick="openCalc(event, 'PRC')">PRÓ-RATA DE
+                CANCELAMENTO</button>
+            <button class="w3-bar-item w3-button w3-ripple tablink" onclick="openCalc(event, 'NM')">NEGOCIAR
+                MONITORIA</button>
+        </div>
+        <a href="https://forms.office.com/e/aibhYAaAMS" target="_blank"
+            class="w3-bar-item w3-text-indigo w3-margin-bottom" style="text-align:center;">Encontrou um problema?
+            <br>Avise aqui!</a>
+    </div>
+
+
+    <div id="notification" class="w3-panel w3-green w3-card-4 w3-center w3-round"
+        style="display:none; opacity:0; position:fixed; top:5%; right:2%; width:200px; padding:10px; transition: opacity 0.5s ease, transform 0.5s ease; transform: translateY(-20px); text-shadow:1px 1px 0 #444">
+        <p id="notification-text" style="margin:0;">Texto copiado</p>
+        <i class="fa fa-check" style="font-size:24px"></i>
+    </div>
+    <div id="modalCamposPreenchidos" class="w3-modal">
+        <div class="w3-modal-content w3-animate-bottom w3-card-4">
+            <header class="w3-container w3-red">
+                <h2>Preencha todos os campos!</h2>
+            </header>
+            <div class="w3-container">
+                <p id="mensagemCamposVazios"></p>
+                <button onclick="fecharModal()"
+                    class="w3-button w3-red w3-ripple w3-round w3-right w3-margin">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-left:300px">
+        <div id="PRI" class="w3-container calc" style="display: none">
+            <h2 class="w3-red w3-round w3-padding-small">PRÓ-RATA DE INÍCIO</h2>
+
+            <h6>
+                <table cellpadding="3" cellspacing="3" align="left">
+                    <tr>
+                        <td class="col1">Valor da mensalidade</td>
+                        <td class="col2"><input class="w3-input w3-border-red" style="width:200px" value="0"
+                                id="mensPRI" oninput="formatarValorCampo(this)"></td>
+                    </tr>
+                    <tr>
+                        <td class="col1">Data de início do contrato</td>
+                        <td class="col2"><input class="w3-input w3-border-red" style="width:200px" type="date"
+                                id="dtiniPRI"></td>
+                    </tr>
+                    <tr>
+                        <td class="col1">Data de vencimento do título</td>
+                        <td class="col2"><input class="w3-input w3-border-red" style="width:200px" type="date"
+                                id="dtvencPRI"></td>
+                    </tr>
+                    <tr>
+                        <td class="col1">Tem retenção de ISS?<br><i>(insira a porcentagem)</i></td>
+                        <td class="col2"><input class="w3-input w3-border-red" style="width:200px" value="0"
+                                id="ISSPRI"></td>
+                    </tr>
+                    <tr>
+                        <td class="col1">Tem retenção de IR?</td>
+                        <td class="col2">
+                            <select class="w3-select w3-border-red" style="width:100px" id="IRPRI">
+                                <option value="0">NÃO</option>
+                                <option value="1">SIM</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col1">Tem retenção de PCC?</td>
+                        <td class="col2">
+                            <select class="w3-select w3-border-red" style="width:100px" id="PCCPRI">
+                                <option value="0">NÃO</option>
+                                <option value="1">SIM</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col1">Contrato parcelado?</td>
+                        <td class="col2">
+                            <select class="w3-select w3-border-red" style="width:100px" id="FinPRI">
+                                <option value="0">NÃO</option>
+                                <option value="1">SIM</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr colspan="1">
+                        <td class="col1">
+                            <button class="w3-button w3-red w3-ripple w3-button w3-block"
+                                onclick="calcularPRI()">Calcular</button>
+                        </td>
+                        <td class="col2">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col1">Quantidade de dias utilizados</td>
+                        <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="qtdiasPRI"
+                                readonly></td>
+                    </tr>
+                    <tr>
+                        <td class="col1">Valor do ISS</td>
+                        <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="VlISSPRI"
+                                readonly></td>
+                    </tr>
+                    <tr>
+                        <td class="col1">Valor do IR</td>
+                        <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="VlIRPRI"
+                                readonly></td>
+                    </tr>
+                    <tr>
+                        <td class="col1">Valor do PCC</td>
+                        <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="VlPCCPRI"
+                                readonly></td>
+                    </tr>
+                    <tr>
+                        <td class="col1">Valor do parcelamento</td>
+                        <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="VlFinPRI"
+                                readonly></td>
+                    </tr>
+                    <tr>
+                        <td class="col1">Valor a pagar</td>
+                        <td class="col2"><input class="w3-input w3-border-red" style="width:200px" id="VlPagPRI"
+                                readonly></td>
+                    </tr>
+                </table>
+            </h6>
+        </div>
+
+        <div id="PRC" class="w3-container calc" style="display: none">
+            <h2 class="w3-red w3-round w3-padding-small">PRÓ-RATA DE CANCELAMENTO</h2>
+
+            <h6>
+                <table cellpadding="3" cellspacing="3" align="left">
+                    <tr>
+                        <td class="col1 w3-cell-top">
+                            <table cellpadding="3" cellspacing="3" align="left">
+                                <tr>
+                                    <td class="col1">O contrato está em nome de:<br></td>
+                                    <td class="col2">
+                                        <!-- Grupo de botões para seleção -->
+                                        <div class="w3-bar w3-round">
+                                            <input class="w3-radio" type="radio" id="fisica" name="contrato"
+                                                value="fisica" checked>
+                                            <label
+                                                class="w3-bar-item w3-btn w3-border-right w3-padding-small w3-hover-light-grey"
+                                                for="fisica">Pessoa Física</label>
+                                            <input class="w3-radio" type="radio" id="juridica" name="contrato"
+                                                value="juridica">
+                                            <label class="w3-bar-item w3-btn w3-padding-small w3-hover-light-grey"
+                                                for="juridica">Pessoa Jurídica</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col1">A mensalidade a ser calculada foi paga?</td>
+                                    <td class="col2">
+                                        <select class="w3-select w3-border-red" style="width:100px" id="mensPAGA"
+                                            onchange="mensalidadePaga()">
+                                            <option value="" disabled selected>Selecionar</option>
+                                            <option value="0">Não</option>
+                                            <option value="1">Sim</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col1">Valor da mensalidade<br><b><i>(Valor da nota fiscal)</i></b></td>
+                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
+                                            value="R$ 0,00" id="mensPRC" oninput="formatarValorCampo(this)"></td>
+                                </tr>
+                                <tr id="VJoinvillePRC">
+                                    <td class="col1">A nota é de Joinville?</td>
+                                    <td class="col2">
+                                        <select class="w3-select w3-border-red" style="width:100px" id="JoinvillePRC"
+                                            onchange="controlarVisibilidadeCampos()">
+                                            <option value="" disabled selected>Selecionar</option>
+                                            <option value="0">Não</option>
+                                            <option value="1">Sim</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col1">Data de solicitação de cancelamento</td>
+                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
+                                            type="date" id="dtcancPRC"></td>
+                                </tr>
+                                <tr>
+                                    <td class="col1">Data de vencimento do título</td>
+                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
+                                            type="date" id="dtvencPRC"></td>
+                                </tr>
+
+                                <tr id="VISSPRC">
+                                    <td class="col1">Tem retenção de ISS?<br><i>(Insira a porcentagem)</i></td>
+                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
+                                            value="0%" id="ISSPRC" oninput="formatarPercentualCampo(this)"></td>
+                                </tr>
+                                <tr id="VIRPRC">
+                                    <td class="col1">Tem retenção de IR?</td>
+                                    <td class="col2">
+                                        <select class="w3-select w3-border-red" style="width:100px" id="IRPRC">
+                                            <option value="" disabled selected>Selecionar</option>
+                                            <option value="0">Não</option>
+                                            <option value="1">Sim</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr id="VPCCPRC">
+                                    <td class="col1">Tem retenção de PCC?</td>
+                                    <td class="col2">
+                                        <select class="w3-select w3-border-red" style="width:100px" id="PCCPRC">
+                                            <option value="" disabled selected>Selecionar</option>
+                                            <option value="0">Não</option>
+                                            <option value="1">Sim</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col1">Tem serviços digitais?<br><i>(Insira o valor total do SVA)</i></td>
+                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
+                                            value="0,00" id="svaPRC" oninput="formatarValorCampo(this)"></td>
+                                </tr>
+                                <tr colspan="1">
+                                    <td class="col1">
+                                        <button class="w3-button w3-red w3-ripple w3-button w3-block"
+                                            onclick="calcularPRC()">Calcular</button>
+                                    </td>
+                                    <td class="col1">
+                                        <button class="w3-button w3-red"
+                                            onclick="limparCamposPRC(); visibilidadeJoinville()" title="Limpar dados"><i
+                                                class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
+                                    <td class="col2">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col1">Quantidade de dias utilizados</td>
+                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
+                                            id="qtdiasPRC" readonly></td>
+                                </tr>
+                                <tr>
+                                    <td class="col1">Data final do aviso prévio de 30 dias</td>
+                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
+                                            id="dtfinPRC" readonly></td>
+                                </tr>
+                                <tr id="VRISSPRC">
+                                    <td class="col1">Valor do ISS</td>
+                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
+                                            id="VlISSPRC" readonly></td>
+                                </tr>
+                                <tr id="VRIRPRC">
+                                    <td class="col1">Valor do IR</td>
+                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
+                                            id="VlIRPRC" readonly></td>
+                                </tr>
+                                <tr id="VRPCCPRC">
+                                    <td class="col1">Valor do PCC</td>
+                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
+                                            id="VlPCCPRC" readonly></td>
+                                </tr>
+                                <tr id="TRVlPagPRC" class="w3-hide">
+                                    <td class="col1"><b>Valor a pagar<br><i>(Envio de D.I)</i></b></td>
+                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
+                                            id="VlPagPRC" readonly></td>
+                                    <td><button class="w3-button w3-red w3-ripple w3-round-large"
+                                            title="Copiar valor a pagar"
+                                            onclick="copyValorResultadoPRCById('VlPagPRC')"><i class="fa fa-copy"></i>
+                                        </button></td>
+                                </tr>
+                                <tr id="TRVlReePRC" class="w3-hide">
+                                    <td class="col1 "><b>Valor a ser reembolsado<br><i>(Solicitação de reembolso
+                                                GOA)</i></b></td>
+                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
+                                            id="VlReePRC" readonly></td>
+                                    <td><button class="w3-button w3-red w3-ripple w3-round-large"
+                                            title="Copiar valor a ser reembolsado"
+                                            onclick="copyValorResultadoPRCById('VlReePRC')"><i class="fa fa-copy"></i>
+                                        </button></td>
+                                </tr>
+                                <tr id="Resultado">
+                                    <td class="col1"><i class="w3-text-red">Atenção</i><br><b>Informe se a mensalidade
+                                            foi paga<br>para ver o processo a ser realizado</b></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                </table>
+                </td>
+                <td class="col2" style="width:50px"></td>
+                <td class="col3 w3-cell-top">
+                    <table class="w3-card w3-light-grey" cellpadding="3" cellspacing="13">
+                        <tbody id="blocoEnvioDI" class="w3-hide">
+                            <tr align="center" class="w3-light-grey">
+                                <td>
+                                    <b>ENVIO DE D.I</b> ABRIR O.S. PARA:<br><u><i>SAC > BACKOFFICE > SOLICITAÇÃO
+                                            ENVIO DI (DEPÓSITO
+                                            IDENTIFICADO)</u></i>
+                                </td>
+                            </tr>
+                            <tr class="w3-dark-grey" align="center" id="txtPRC">
+                                <td>Por favor, enviar dados para DI no valor de R$ xxx,xx referente ao pró-rata de
+                                    cancelamento, que foi do dia xx/xx/xxxx até yy/yy/yyyy no e-mail:</td>
+                            </tr>
+                            <tr align="center">
+                                <td>
+                                    <button class="w3-button w3-red w3-ripple w3-round-large"
+                                        onclick="copyTextById('txtPRC')"
+                                        title="Copiar descrição a ser inserida na abertura da O.S">Copiar texto</button>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                        <tbody id="blocoReembolso" class="w3-hide">
+                            <tr align="center" class="w3-light-grey">
+                                <td>
+                                    <b>REEMBOLSO MENSALIDADE PAGA A MAIS</b> ABRIR O.S. PARA:<br><u><i>CADASTRO >
+                                            CADASTRO > SOLICITAÇÃO DE REEMBOLSO</u></i>
+                                </td>
+                            </tr>
+                            <tr class="w3-dark-grey" align="center" id="txtReePRC">
+                                <td>Por favor, enviar dados para reembolso no valor de R$ xxx,xx referente a
+                                    pró-rata de
+                                    cancelamento cobrada a mais, dados bancários para reembolso:</td>
+                            </tr>
+                            <tr align="center">
+                                <td>
+                                    <button class="w3-button w3-red w3-ripple w3-round-large w3-border"
+                                        onclick="copyTextById('txtReePRC')"
+                                        title="Copiar descrição a ser inserida na abertura da O.S">Copiar texto</button>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                        <tr>
+                            <td>
+                                <div class="w3-panel w3-pale w3-leftbar w3-border-red">
+                                    <i class="w3-text-red">Atenção!</i>
+                                    <li>Devoluções acontecem somente para uma conta do CPF ou CNPJ titular do
+                                        contrato.</li>
+                                    <li>Antes de realizar o cálculo, confirme se de fato o valor foi pago, e não
+                                        baixado como desconto.</li>
+                                    <li>Os serviços digitais só devem ser considerados, se a monitoria foi
+                                        emitida considerando os serviços.</li>
+                                </div>
+                                <h1>CALCULANDO O SVA PROPORCIONAL</h1>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </h6>
+        </div>
+
+        <div id="NM" class="w3-container calc" style="display: none">
+            <h2 class="w3-red w3-round w3-padding-small">NEGOCIAR MONITORIA</h2>
+
+            <h6>
+                <table cellpadding="3" cellspacing="3" align="left">
+                    <tr>
+                        <td class="col1 w3-cell-top">
+                            <table cellpadding="3" cellspacing="3" align="left">
+                                <tr>
+                                    <td class="col1">Valor da mensalidade<br><i>(Sem parcelamento)</i></td>
+                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
+                                            value="R$ 0,00" id="mensNM" oninput="formatarValorCampo(this)"></td>
+                                </tr>
+                                <tr>
+                                    <td class="col1">Quantidade de estrelas</td>
+                                    <td class="col2">
+                                        <select class="w3-select w3-border-red" style="width:100px" id="starNM">
+                                            <option value="1">★</option>
+                                            <option value="2">★★</option>
+                                            <option value="3">★★★</option>
+                                            <option value="4">★★★★</option>
+                                            <option value="5">★★★★★</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col1">Data de início do contrato</td>
+                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
+                                            type="date" id="dtiniNM"></td>
+                                </tr>
+                                <tr>
+                                    <td class="col1">Contrato parcelado?</td>
+                                    <td class="col2">
+                                        <select class="w3-select w3-border-red" style="width:100px" id="FinNM">
+                                            <option value="0">NÃO</option>
+                                            <option value="1">SIM</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr colspan="1">
+                                    <td class="col1">
+                                        <button class="w3-button w3-red w3-ripple w3-button w3-block"
+                                            onclick="calcularNM()">Calcular</button>
+                                    </td>
+                                    <td class="col1">
+                                        <button class="w3-button w3-red" onclick="limparCamposNM()"
+                                            title="Limpar dados"><i class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
+                                    <td class="col2">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col1">Porcentagem de desconto</td>
+                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
+                                            id="descNM" readonly></td>
+                                </tr>
+                                <tr>
+                                    <td class="col1">Valor do total do desconto</td>
+                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
+                                            id="VldescNM" readonly></td>
+                                </tr>
+                                <tr>
+                                    <td class="col1">Valor do desconto por mês<br><i>(durante 3 meses)</i></td>
+                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
+                                            id="VldescmesNM"></td>
+                                </tr>
+                                <tr>
+                                    <td class="col1">Valor do parcelamento</td>
+                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
+                                            id="VlFinNM" readonly></td>
+                                </tr>
+                                <tr>
+                                    <td class="col1">Valor a pagar</td>
+                                    <td class="col2"><input class="w3-input w3-border-red" style="width:200px"
+                                            id="VlPagNM" readonly></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td class="col2" style="width:50px"></td>
+                        <td class="col3 w3-cell-top">
+                            <table class="w3-card w3-light-grey" cellpadding="3" cellspacing="3" align="left">
+                                <tr align="center">
+                                    <td>
+                                        ABRIR O.S. PARA:<br><b><i>CADASTRO > CADASTRO > APLICAÇÃO DE DESCONTO</b></i>
+                                    </td>
+                                </tr>
+                                <tr class="w3-dark-grey" align="center" id="txtNM">
+                                    <td>Favor aplicar o desconto de x,xx% na mensalidade durante 3 meses. Total de
+                                        desconto: R$ xx,xx diluído em 3x de R$ xx,xx</td>
+                                </tr>
+                                <tr align="center">
+                                    <td>
+                                        <button class="w3-button w3-red w3-ripple w3-round-large"
+                                            onclick="copyTextById('txtNM')"
+                                            title="Copiar descrição a ser inserida na abertura da O.S">Copiar
+                                            texto</button>
+                                    </td>
+                                </tr>
+                                <td>
+                                    <div class="w3-panel w3-pale w3-leftbar w3-border-red w3-margin-left">
+                                        <i class="w3-text"><b>Regras</b></i>
+                                        <li>Não pode ter título vencido.</li>
+                                        <li>Não pode ter recebido desconto nos últimos 12 meses.</li>
+                                        <li>Deve ter mais de 6 meses de contrato.</li>
+                                    </div>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </h6>
+        </div>
+
+    </div>
+
+</body>
+<!-- Desenvolvido por Luis Roberto Cerqueira Campos e Vinícius Sousa Celestino -->
+
+</html>
