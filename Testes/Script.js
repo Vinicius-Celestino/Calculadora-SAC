@@ -113,9 +113,9 @@ function calcularPRC() {
   var VlISS = (ISS / 100) * ((mens / 30) * qtdias);
   var VlIR = IR * 0.01 * ((mens / 30) * qtdias);
   var VlPCC = PCC * 0.0465 * ((mens / 30) * qtdias);
-  var VlPag = (mens / 30) * qtdias - VlISS - VlIR - VlPCC + sva;
-  var VlRee = mens - (VlPag - sva);
-
+  var VlPag = ((mens + sva) / 30) * qtdias - VlISS - VlIR - VlPCC;
+  var VlRee = (mens + sva) - VlPag ;
+  
   document.getElementById("qtdiasPRC").value = qtdias;
   document.getElementById("dtfinPRC").value = dtfin
     .toLocaleString()
